@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [Range(0.25f, 0.75f)] public float crouchHeightMultiplier = 0.5f;
 
     [Header("Jumping")]
-    [Range(5.0f, 25.0f)] public float jumpForce = 10f;
+    [Range(250.0f, 1000.0f)] public float jumpForce = 500f;
     [Range(0.01f, 0.5f)] public float groundDetectionDistance = 0.1f;
     public LayerMask groundLayer;
     public Transform groundCheckTransform;

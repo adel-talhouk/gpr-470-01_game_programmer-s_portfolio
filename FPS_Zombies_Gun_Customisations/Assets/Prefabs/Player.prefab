@@ -297,7 +297,7 @@ MonoBehaviour:
   sprintSpeedMultiplier: 2
   crouchSpeedMultiplier: 0.5
   crouchHeightMultiplier: 0.5
-  jumpForce: 10
+  jumpForce: 500
   groundDetectionDistance: 0.1
   groundLayer:
     serializedVersion: 2
