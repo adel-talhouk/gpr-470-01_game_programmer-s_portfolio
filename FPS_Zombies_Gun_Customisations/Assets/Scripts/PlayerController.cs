@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
     [Range(0.25f, 0.75f)] public float crouchHeightMultiplier = 0.5f;
 
     [Header("Jumping")]
-    [Range(1.0f, 5.0f)] public float jumpForce;
-    [Range(0.01f, 0.5f)] public float groundDetectionDistance;
+    [Range(5.0f, 25.0f)] public float jumpForce = 10f;
+    [Range(0.01f, 0.5f)] public float groundDetectionDistance = 0.1f;
     public LayerMask groundLayer;
     public Transform groundCheckTransform;
 
@@ -20,13 +20,16 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     CapsuleCollider capsuleCol;
 
-    //Helper data
+    //Helper data - Movement
     float xMove;
     float zMove;
-    float originalCapsuleColHeight;
     bool bIsGrounded = false;
     bool bIsSprinting = false;
     bool bIsCrouching = false;
+
+    //Helper data - components
+    float originalCapsuleColHeight;
+    Vector3 originalGroundCheckLocalPos;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +39,7 @@ public class PlayerController : MonoBehaviour
         capsuleCol = GetComponent<CapsuleCollider>();
 
         originalCapsuleColHeight = capsuleCol.height;
+        originalGroundCheckLocalPos = groundCheckTransform.localPosition;
     }
 
     // Update is called once per frame
@@ -127,12 +131,16 @@ public class PlayerController : MonoBehaviour
     void Crouch()
     {
         capsuleCol.height *= crouchHeightMultiplier;
+
+        //Re-position ground check ---------------------------------------THIS MAY NOT WORK FOR ALL VALUES, INSTEAD FIND POINT CLOSEST TO GROUND, OR FREEZE ITS POSITION IN WORLD SPACE (un-child then re-child? probably not)
+        groundCheckTransform.localPosition += new Vector3(0f, capsuleCol.height * crouchHeightMultiplier, 0f);
         bIsCrouching = true;
     }
 
     void Stand()
     {
         capsuleCol.height = originalCapsuleColHeight;
+        groundCheckTransform.localPosition = originalGroundCheckLocalPos;
         bIsCrouching = false;
     }
 }
