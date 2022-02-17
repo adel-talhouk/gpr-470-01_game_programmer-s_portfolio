@@ -16,6 +16,7 @@ public class WeaponFullAuto : BaseWeapon
 
     [Header("Other References")]
     public Transform cameraTransform;
+    public Transform firePoint;
 
     //Private data
     Animator animator;
