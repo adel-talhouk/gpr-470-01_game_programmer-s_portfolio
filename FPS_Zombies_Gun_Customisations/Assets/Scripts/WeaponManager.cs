@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //All the weapon extensions
+    public BaseWeapon weapon;
+    public BaseWeaponBarrel barrel;
+    public BaseWeaponStock stock;
+    public BaseWeaponGrip grip;
+    public BaseWeaponMag mag;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        //INPUT - Mouse 0 - Fire
+        if (Input.GetMouseButtonDown(0))
+        {
+            Fire();
+        }
+    }
+
+    void Fire()
+    {
+
+    }
+
+    IEnumerator Reload()
+    {
+
     }
 }
