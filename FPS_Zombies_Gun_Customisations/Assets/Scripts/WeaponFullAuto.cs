@@ -2,19 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponManager : MonoBehaviour
+public class WeaponFullAuto : MonoBehaviour
 {
-    //All the weapon extensions
-    public BaseWeapon weapon;
+    [Header("Base Weapon Stats")]
+    public float damage;
+    public float rateOfFire;
+
+    [Header("Weapon extensions")]
     public BaseWeaponBarrel barrel;
     public BaseWeaponStock stock;
     public BaseWeaponGrip grip;
     public BaseWeaponMag mag;
 
+    [Header("Other references")]
+    public Transform cameraTransform;
+
     //Helper data
     int currentAmmoCount;
     int reserveAmmoCount;
     bool bCanFire = true;
+    Vector3 fireDirection;
 
     void Start()
     {
@@ -25,11 +32,15 @@ public class WeaponManager : MonoBehaviour
 
     void Update()
     {
+        //Set fire direction (geometry and math, send a raycast straight from camera, see what it hits, fire towards that)
+        
+        
         //INPUT - Mouse 0 - Fire
         if (Input.GetMouseButtonDown(0) && bCanFire)
         {
             Fire();
         }
+
     }
 
     void Fire()
@@ -44,14 +55,6 @@ public class WeaponManager : MonoBehaviour
         yield return new WaitForSeconds(mag.reloadTime);
 
         bCanFire = true;
-    }
-
-    void SetNewWeaponType(BaseWeapon newWeapon)
-    {
-        weapon = newWeapon;
-
-        //Set values
-
     }
 
     void SetNewBarrelType(BaseWeaponBarrel newBarrel)
