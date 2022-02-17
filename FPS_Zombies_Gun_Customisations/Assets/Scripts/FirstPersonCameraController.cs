@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Thank you Brackeys for camera controls: https://youtu.be/_QajrabyTJc
 public class FirstPersonCameraController : MonoBehaviour
 {
     public float mouseSensitivity = 100f;
