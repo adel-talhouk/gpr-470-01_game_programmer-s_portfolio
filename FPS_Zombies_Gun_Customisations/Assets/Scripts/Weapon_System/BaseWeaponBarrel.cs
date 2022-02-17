@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "WeaponAttachments/Barrel")]
-public abstract class BaseWeaponBarrel
+public class BaseWeaponBarrel
 {
     //Damage falloff starts
     public float damageReductionRange;

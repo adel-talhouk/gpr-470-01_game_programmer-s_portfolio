@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Weapon")]
-public abstract class BaseWeapon
+public class BaseWeapon
 {
     //Base damage value
     public float damage;
