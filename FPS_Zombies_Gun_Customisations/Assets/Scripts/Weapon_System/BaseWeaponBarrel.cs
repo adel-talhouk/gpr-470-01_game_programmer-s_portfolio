@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "WeaponAttachments/Barrel")]
 public abstract class BaseWeaponBarrel
 {
     //Damage falloff starts

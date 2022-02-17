@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "WeaponAttachments/Mag")]
 public abstract class BaseWeaponMag
 {
     //How many bullets in each magazine
