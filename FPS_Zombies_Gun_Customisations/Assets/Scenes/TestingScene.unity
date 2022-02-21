@@ -411,5 +411,9 @@ PrefabInstance:
       propertyPath: groundLayer.m_Bits
       value: 64
       objectReference: {fileID: 0}
+    - target: {fileID: 4990556829542980125, guid: 98bd000f53b7f2a4dac1297d3b2a1a49, type: 3}
+      propertyPath: sprintSpeedMultiplier
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98bd000f53b7f2a4dac1297d3b2a1a49, type: 3}
