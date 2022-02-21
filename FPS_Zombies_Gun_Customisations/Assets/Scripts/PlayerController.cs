@@ -58,8 +58,8 @@ public class PlayerController : MonoBehaviour
 
     void GetInput()
     {
-        xMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
-        zMove = Input.GetAxisRaw("Vertical") * moveSpeed;
+        xMove = Input.GetAxisRaw("Horizontal");
+        zMove = Input.GetAxisRaw("Vertical");
 
         //Toggle sprint
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -68,15 +68,11 @@ public class PlayerController : MonoBehaviour
             if (bIsCrouching)
             {
                 Stand();
-                return;
+                //return;
             }
 
             if (!bIsSprinting)
             {
-                //Modify movement speed
-                xMove *= sprintSpeedMultiplier;
-                zMove *= sprintSpeedMultiplier;
-
                 bIsSprinting = true;
             }
             else
@@ -85,21 +81,32 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //Apply sprint speed multipler
+        if (bIsSprinting)
+        {
+            xMove *= sprintSpeedMultiplier;
+            zMove *= sprintSpeedMultiplier;
+        }
+
         //Toggle crouch
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             if (!bIsCrouching)
             {
-                //Modify movement speed
-                xMove *= crouchSpeedMultiplier;
-                zMove *= crouchSpeedMultiplier;
-
                 Crouch();
             }
             else
             {
                 Stand();
             }
+        }
+
+        //Apply crouch speed multiplier
+
+        if (bIsCrouching)
+        {
+            xMove *= crouchSpeedMultiplier;
+            zMove *= crouchSpeedMultiplier;
         }
 
         //Check if trying to jump
@@ -120,7 +127,7 @@ public class PlayerController : MonoBehaviour
     {
         //If-statement to increase efficiency - don't make a new Vector3 if you don't have to
         if (xMove != 0 || zMove != 0)
-            rb.velocity = new Vector3(xMove, rb.velocity.y, zMove);
+            rb.velocity = transform.TransformDirection(new Vector3(xMove, rb.velocity.y, zMove) * moveSpeed * Time.deltaTime * 100f);
     }
 
     void Jump()
