@@ -15,6 +15,7 @@ public class WeaponFullAuto : BaseWeapon
     public Transform cameraTransform;
     public Transform firePointTransform;
     public GameObject tempFireHitPrefab;
+    public GameObject damageIndicatorPrefab;
 
     [Header("UI")]
     public TextMeshProUGUI ammoCountText;
@@ -161,6 +162,10 @@ public class WeaponFullAuto : BaseWeapon
             //if (rayHit.collider.gameObject.CompareTag("Enemy"))
             //{
             //    
+
+                //Indicate damage
+                GameObject damageIndicator = Instantiate(damageIndicatorPrefab, rayHit.transform.position, Quaternion.identity);
+                damageIndicator.GetComponentInChildren<TextMeshProUGUI>().text = damageToApply.ToString();
             //}
         }
 
