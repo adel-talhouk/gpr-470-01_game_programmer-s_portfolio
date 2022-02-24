@@ -106,19 +106,19 @@ public class WeaponFullAuto : BaseWeapon
         RaycastHit rayHit;
 
         //Set fire direction
-        if (bIsADSing)
+        if (!bIsADSing)
         {
-            //Fire straight ahead
-            fireDirection = cameraTransform.forward;
-        }
-        else
-        {
-            //Fire a ray forward and fire direction goes towards the first target
-            if (Physics.Raycast(firePointTransform.position, cameraTransform.forward, out rayHit, Mathf.Infinity))
+            //Fire a ray forward and fire direction goes towards the first target within max range
+            if (Physics.Raycast(firePointTransform.position, cameraTransform.forward, out rayHit, barrel.damageReductionRange * 4f))
             {
                 firePointTransform.forward = (rayHit.point - firePointTransform.position).normalized;
                 fireDirection = firePointTransform.forward;
             }
+        }
+        else
+        {
+            //Fire straight ahead
+            fireDirection = cameraTransform.forward;
         }
 
         //Fire
@@ -164,7 +164,7 @@ public class WeaponFullAuto : BaseWeapon
             //    
 
                 //Indicate damage
-                GameObject damageIndicator = Instantiate(damageIndicatorPrefab, rayHit.transform.position, Quaternion.identity);
+                GameObject damageIndicator = Instantiate(damageIndicatorPrefab, rayHit.point + new Vector3(0f, 2f, -2f), Quaternion.identity);
                 damageIndicator.GetComponentInChildren<TextMeshProUGUI>().text = damageToApply.ToString();
             //}
         }

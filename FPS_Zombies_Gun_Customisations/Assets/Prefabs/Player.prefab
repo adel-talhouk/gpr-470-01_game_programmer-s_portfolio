@@ -919,6 +919,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 1529907423872830374}
   firePointTransform: {fileID: 1275943928}
   tempFireHitPrefab: {fileID: 1777694945669258065, guid: 86ff26fbe9e4fc647a9b8aeabdc8da29, type: 3}
+  damageIndicatorPrefab: {fileID: 7718675745279693184, guid: fe68b00e4d4df4b479a1e931cc2469d6, type: 3}
   ammoCountText: {fileID: 524223055}
   warningsText: {fileID: 1845175148}
 --- !u!1 &5714627940331426412
