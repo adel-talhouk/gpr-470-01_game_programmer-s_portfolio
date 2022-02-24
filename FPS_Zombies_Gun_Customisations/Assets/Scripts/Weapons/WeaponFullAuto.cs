@@ -62,13 +62,28 @@ public class WeaponFullAuto : BaseWeapon
         //INPUT MOUSE HELD - Mouse 0 - Fire
         if (Input.GetMouseButton(0) && bCanFire)
         {
-            if (fire != null)
+            //If trying to shoot with no ammo left
+            if (currentAmmoCount + reserveAmmoCount == 0)
             {
-                StopCoroutine(fire);
-            }
+                //Reload - indicate there is no ammo left
+                if (reload != null)
+                {
+                    StopCoroutine(reload);
+                }
 
-            fire = Fire();
-            StartCoroutine(fire);
+                reload = Reload();
+                StartCoroutine(Reload());
+            }
+            else
+            {
+                if (fire != null)
+                {
+                    StopCoroutine(fire);
+                }
+
+                fire = Fire();
+                StartCoroutine(fire);
+            }
         }
 
         //INPUT KEY DOWN - 'R' - Reload
@@ -106,54 +121,16 @@ public class WeaponFullAuto : BaseWeapon
         }
 
         //Fire
-        if (currentAmmoCount > 0)
+        Physics.Raycast(firePointTransform.position, fireDirection, out rayHit, barrel.damageReductionRange * 4f);
+        bCanFire = false;
+
+        //Reduce ammo count and update UI
+        currentAmmoCount--;
+        ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+
+        //Auto reload
+        if (currentAmmoCount == 0)
         {
-            Physics.Raycast(firePointTransform.position, fireDirection, out rayHit, barrel.damageReductionRange * 4f);
-            bCanFire = false;
-
-            //Reduce ammo count and update UI
-            currentAmmoCount--;
-            ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
-
-            //Auto reload
-            if (currentAmmoCount == 0)
-            {
-                if (reload != null)
-                {
-                    StopCoroutine(reload);
-                }
-
-                reload = Reload();
-                StartCoroutine(Reload());
-            }
-
-            //TO-DO: Player SFX and particles
-
-
-            //If it hit something
-            if (rayHit.transform != null)
-            {
-                float damageToApply = damage;
-
-                //TEMP - Spawn sphere there     TO-DO: REMOVE
-                GameObject hitPointIndicator = Instantiate(tempFireHitPrefab, rayHit.point, Quaternion.identity);
-
-                //Check distance, apply damage falloff
-                if ((rayHit.transform.position - transform.position).sqrMagnitude >= barrel.damageReductionRange * barrel.damageReductionRange)
-                {
-                    damageToApply *= barrel.damageFalloffMultiplier;
-                }
-
-                //TO-DO: Apply damage
-                //if (rayHit.collider.gameObject.CompareTag("Enemy"))
-                //{
-                //    
-                //}
-            }
-        }
-        else
-        {
-            //Reload - indicate there is no ammo left   TO-DO: Find a cleaner place to put this and have it call the indicator from reload and stay on screen for reloadTime seconds
             if (reload != null)
             {
                 StopCoroutine(reload);
@@ -161,6 +138,30 @@ public class WeaponFullAuto : BaseWeapon
 
             reload = Reload();
             StartCoroutine(Reload());
+        }
+
+        //TO-DO: Player SFX and particles
+
+
+        //If it hit something
+        if (rayHit.transform != null)
+        {
+            float damageToApply = damage;
+
+            //TEMP - Spawn sphere there     TO-DO: REMOVE
+            GameObject hitPointIndicator = Instantiate(tempFireHitPrefab, rayHit.point, Quaternion.identity);
+
+            //Check distance, apply damage falloff
+            if ((rayHit.transform.position - transform.position).sqrMagnitude >= barrel.damageReductionRange * barrel.damageReductionRange)
+            {
+                damageToApply *= barrel.damageFalloffMultiplier;
+            }
+
+            //TO-DO: Apply damage
+            //if (rayHit.collider.gameObject.CompareTag("Enemy"))
+            //{
+            //    
+            //}
         }
 
         //Cooldown
