@@ -21,9 +21,11 @@ public class WeaponFullAuto : BaseWeapon
     //Private data
     Animator animator;
 
-    //Helper data
+    //---------------Mag data---------------
     int currentAmmoCount;
     int reserveAmmoCount;
+
+    //Helper data
     bool bCanFire = true;
     bool bIsADSing = false;
     Vector3 fireDirection;
@@ -49,18 +51,6 @@ public class WeaponFullAuto : BaseWeapon
         {
             StopADS();
         }
-
-        //Set fire direction
-        if (bIsADSing)  //If aiming
-        {
-            //Fire straight ahead
-            fireDirection = cameraTransform.forward;
-        }
-        else    //Otherwise
-        {
-            //(geometry and math, send a raycast straight from camera, see what it hits, fire towards that)---------------------------------------------------------
-
-        }
         
         //INPUT MOUSE HELD - Mouse 0 - Fire
         if (Input.GetMouseButton(0) && bCanFire)
@@ -68,25 +58,65 @@ public class WeaponFullAuto : BaseWeapon
             Fire();
         }
 
+        //INPUT KEY DOWN - 'R' - Reload
+        if (Input.GetKeyDown(KeyCode.R) && reserveAmmoCount > 0)
+        {
+            Reload();
+        }
     }
 
     public override void Fire()
     {
-
+        if (bCanFire)
+        {
+            //Auto reload
+            if (currentAmmoCount == 0 && reserveAmmoCount > 0)
+            {
+                Reload();
+            }
+        }
     }
 
     public override void ADS()
     {
         animator.SetBool("bIsAiming", true);
+
+        //Fire straight ahead
+        fireDirection = cameraTransform.forward;
     }
 
     public override void StopADS()
     {
         animator.SetBool("bIsAiming", false);
+
+        //(geometry and math, send a raycast straight from camera, see what it hits, fire towards that)---------------------------------------------------------
+
     }
 
     IEnumerator Reload()
     {
+        //Account for any ammo that remains in the clip
+        int remainingAmmoInClip = currentAmmoCount;
+        int totalRemainingAmmo = reserveAmmoCount + remainingAmmoInClip;
+        int ammoTopUp;
+
+        //Add as much remaining ammo as possible
+        if (totalRemainingAmmo >= mag.magSize)
+        {
+            ammoTopUp = mag.magSize;
+        }
+        else
+        {
+            ammoTopUp = totalRemainingAmmo;
+        }
+
+        //Update ammo count and reserve ammo count
+        currentAmmoCount = ammoTopUp;
+        reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
+
+        //TO-DO: Update UI
+
+
         bCanFire = false;
 
         yield return new WaitForSeconds(mag.reloadTime);
