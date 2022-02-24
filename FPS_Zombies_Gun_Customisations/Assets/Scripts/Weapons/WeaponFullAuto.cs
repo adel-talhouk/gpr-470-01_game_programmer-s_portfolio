@@ -16,7 +16,7 @@ public class WeaponFullAuto : BaseWeapon
 
     [Header("Other References")]
     public Transform cameraTransform;
-    public Transform firePoint;
+    public Transform firePointTransform;
 
     //Private data
     Animator animator;
@@ -27,7 +27,7 @@ public class WeaponFullAuto : BaseWeapon
 
     //Helper data
     bool bCanFire = true;
-    bool bIsADSing = false;
+    //bool bIsADSing = false;
     Vector3 fireDirection;
 
     void Start()
@@ -89,8 +89,14 @@ public class WeaponFullAuto : BaseWeapon
     {
         animator.SetBool("bIsAiming", false);
 
-        //(geometry and math, send a raycast straight from camera, see what it hits, fire towards that)---------------------------------------------------------
+        RaycastHit rayHit;
 
+        //TO-DO: Implement (geometry and math, send a raycast straight from camera, see what it hits, fire towards that)
+        if (Physics.Raycast(firePointTransform.position, cameraTransform.forward, out rayHit, Mathf.Infinity))
+        {
+            firePointTransform.LookAt(rayHit.transform);
+            fireDirection = firePointTransform.forward;
+        }
     }
 
     IEnumerator Reload()
