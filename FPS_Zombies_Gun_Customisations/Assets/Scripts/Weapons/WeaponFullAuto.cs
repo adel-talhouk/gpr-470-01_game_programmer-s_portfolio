@@ -100,8 +100,9 @@ public class WeaponFullAuto : BaseWeapon
                     
             }
 
-            //Reduce ammo count
+            //Reduce ammo count and update UI
             currentAmmoCount--;
+            ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
         }
 
         //Auto reload
