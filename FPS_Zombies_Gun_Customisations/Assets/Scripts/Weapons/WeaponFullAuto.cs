@@ -22,6 +22,8 @@ public class WeaponFullAuto : BaseWeapon
 
     //Private data
     Animator animator;
+    IEnumerator fire;
+    IEnumerator reload;
 
     //---------------Mag data---------------
     int currentAmmoCount;
@@ -58,14 +60,26 @@ public class WeaponFullAuto : BaseWeapon
         }
         
         //INPUT MOUSE HELD - Mouse 0 - Fire
-        if (Input.GetMouseButton(0) && bCanFire && currentAmmoCount > 0)
+        if (Input.GetMouseButton(0) && bCanFire)
         {
-            StartCoroutine(Fire());
+            if (fire != null)
+            {
+                StopCoroutine(fire);
+            }
+
+            fire = Fire();
+            StartCoroutine(fire);
         }
 
         //INPUT KEY DOWN - 'R' - Reload
-        if (Input.GetKeyDown(KeyCode.R) && reserveAmmoCount > 0)
+        if (Input.GetKeyDown(KeyCode.R))
         {
+            if (reload != null)
+            {
+                StopCoroutine(reload);
+            }
+
+            reload = Reload();
             StartCoroutine(Reload());
         }
     }
@@ -92,40 +106,60 @@ public class WeaponFullAuto : BaseWeapon
         }
 
         //Fire
-        Physics.Raycast(firePointTransform.position, fireDirection, out rayHit, barrel.damageReductionRange * 4f);
-        bCanFire = false;
-
-        //TO-DO: Player SFX and particles
-
-
-        //If it hit something
-        if (rayHit.transform != null)
+        if (currentAmmoCount > 0)
         {
-            float damageToApply = damage;
-
-            //TEMP - Spawn sphere there     TO-DO: REMOVE
-            GameObject hitPointIndicator = Instantiate(tempFireHitPrefab, rayHit.point, Quaternion.identity);
-
-            //Check distance, apply damage falloff
-            if ((rayHit.transform.position - transform.position).sqrMagnitude >= barrel.damageReductionRange * barrel.damageReductionRange)
-            {
-                damageToApply *= barrel.damageFalloffMultiplier;
-            }
-
-            //TO-DO: Apply damage
-            //if (rayHit.collider.gameObject.CompareTag("Enemy"))
-            //{
-            //    
-            //}
+            Physics.Raycast(firePointTransform.position, fireDirection, out rayHit, barrel.damageReductionRange * 4f);
+            bCanFire = false;
 
             //Reduce ammo count and update UI
             currentAmmoCount--;
             ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
-        }
 
-        //Auto reload
-        if (currentAmmoCount == 0 && reserveAmmoCount > 0)
+            //Auto reload
+            if (currentAmmoCount == 0)
+            {
+                if (reload != null)
+                {
+                    StopCoroutine(reload);
+                }
+
+                reload = Reload();
+                StartCoroutine(Reload());
+            }
+
+            //TO-DO: Player SFX and particles
+
+
+            //If it hit something
+            if (rayHit.transform != null)
+            {
+                float damageToApply = damage;
+
+                //TEMP - Spawn sphere there     TO-DO: REMOVE
+                GameObject hitPointIndicator = Instantiate(tempFireHitPrefab, rayHit.point, Quaternion.identity);
+
+                //Check distance, apply damage falloff
+                if ((rayHit.transform.position - transform.position).sqrMagnitude >= barrel.damageReductionRange * barrel.damageReductionRange)
+                {
+                    damageToApply *= barrel.damageFalloffMultiplier;
+                }
+
+                //TO-DO: Apply damage
+                //if (rayHit.collider.gameObject.CompareTag("Enemy"))
+                //{
+                //    
+                //}
+            }
+        }
+        else
         {
+            //Reload - indicate there is no ammo left   TO-DO: Find a cleaner place to put this and have it call the indicator from reload and stay on screen for reloadTime seconds
+            if (reload != null)
+            {
+                StopCoroutine(reload);
+            }
+
+            reload = Reload();
             StartCoroutine(Reload());
         }
 
@@ -156,24 +190,54 @@ public class WeaponFullAuto : BaseWeapon
         int totalRemainingAmmo = reserveAmmoCount + remainingAmmoInClip;
         int ammoTopUp;
 
+        //If no ammo left
+        if (totalRemainingAmmo == 0)
+        {
+            warningsText.text = "OUT OF AMMO";
+        }
+        else if (reserveAmmoCount == 0 || remainingAmmoInClip == mag.magSize)   //If trying to reload with a full mag or no reserve ammo
+        {
+            //Do nothing - keep allowing player to fire
+        }
         //Add as much remaining ammo as possible
-        if (totalRemainingAmmo >= mag.magSize)
+        else if (totalRemainingAmmo >= mag.magSize)
         {
             ammoTopUp = mag.magSize;
+
+            //Update ammo count and reserve ammo count
+            currentAmmoCount = ammoTopUp;
+            reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
+
+            //UI indicator
+            warningsText.text = "RELOADING";
+
+            //Do not fire
+            if (fire != null)
+            {
+                StopCoroutine(fire);
+            }
+
+            bCanFire = false;
         }
         else
         {
             ammoTopUp = totalRemainingAmmo;
+
+            //Update ammo count and reserve ammo count
+            currentAmmoCount = ammoTopUp;
+            reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
+
+            //UI indicator
+            warningsText.text = "RELOADING";
+
+            //Do not fire
+            if (fire != null)
+            {
+                StopCoroutine(fire);
+            }
+
+            bCanFire = false;
         }
-
-        //Update ammo count and reserve ammo count
-        currentAmmoCount = ammoTopUp;
-        reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
-
-        //UI indicator
-        warningsText.text = "RELOADING";
-
-        bCanFire = false;
 
         yield return new WaitForSeconds(mag.reloadTime);
 
