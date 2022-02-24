@@ -29,7 +29,7 @@ public class WeaponFullAuto : BaseWeapon
 
     //Helper data
     bool bCanFire = true;
-    //bool bIsADSing = false;
+    bool bIsADSing = false;
     Vector3 fireDirection;
 
     void Start()
@@ -58,7 +58,7 @@ public class WeaponFullAuto : BaseWeapon
         }
         
         //INPUT MOUSE HELD - Mouse 0 - Fire
-        if (Input.GetMouseButton(0) && bCanFire)
+        if (Input.GetMouseButton(0) && bCanFire && currentAmmoCount > 0)
         {
             StartCoroutine(Fire());
         }
@@ -74,6 +74,24 @@ public class WeaponFullAuto : BaseWeapon
     {
         //Prepare to save data
         RaycastHit rayHit;
+
+        //Set fire direction
+        if (bIsADSing)
+        {
+            //Fire straight ahead
+            fireDirection = cameraTransform.forward;
+        }
+        else
+        {
+            //Fire a ray forward and fire direction goes towards the first target
+            if (Physics.Raycast(firePointTransform.position, cameraTransform.forward, out rayHit, Mathf.Infinity))
+            {
+                firePointTransform.forward = (rayHit.point - firePointTransform.position).normalized;
+                fireDirection = firePointTransform.forward;
+            }
+        }
+
+        //Fire
         Physics.Raycast(firePointTransform.position, fireDirection, out rayHit, barrel.damageReductionRange * 4f);
         bCanFire = false;
 
@@ -94,11 +112,11 @@ public class WeaponFullAuto : BaseWeapon
                 damageToApply *= barrel.damageFalloffMultiplier;
             }
 
-            if (rayHit.collider.gameObject.CompareTag("Enemy"))
-            {
-                //TO-DO: Apply damage
-                    
-            }
+            //TO-DO: Apply damage
+            //if (rayHit.collider.gameObject.CompareTag("Enemy"))
+            //{
+            //    
+            //}
 
             //Reduce ammo count and update UI
             currentAmmoCount--;
@@ -121,22 +139,14 @@ public class WeaponFullAuto : BaseWeapon
     {
         animator.SetBool("bIsAiming", true);
 
-        //Fire straight ahead
-        fireDirection = cameraTransform.forward;
+        bIsADSing = true;
     }
 
     public override void StopADS()
     {
         animator.SetBool("bIsAiming", false);
 
-        //Fire a ray forward and fire direction goes towards the first target
-        RaycastHit rayHit;
-
-        if (Physics.Raycast(firePointTransform.position, cameraTransform.forward, out rayHit, Mathf.Infinity))
-        {
-            firePointTransform.LookAt(rayHit.transform);
-            fireDirection = firePointTransform.forward;
-        }
+        bIsADSing = false;
     }
 
     IEnumerator Reload()
@@ -169,7 +179,7 @@ public class WeaponFullAuto : BaseWeapon
 
         //Update UI
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
-        warningsText.text = "RELOADING";
+        warningsText.text = "";
 
         bCanFire = true;
     }
