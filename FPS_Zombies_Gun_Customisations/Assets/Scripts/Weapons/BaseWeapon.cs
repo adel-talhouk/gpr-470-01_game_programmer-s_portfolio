@@ -6,8 +6,12 @@ using UnityEngine;
 //This will also allow for a weapon manager to have references to the BaseWeapon and have access to derived classes for easy switching.
 public abstract class BaseWeapon : MonoBehaviour
 {
+    [Header("Base Weapon Stats")]
+    [Range(1, 100)] public int damage;
+    [Range(0.05f, 2.0f)] public float rateOfFire;
+
     //Fire
-    public abstract void Fire();
+    public abstract IEnumerator Fire();
 
     //Aim Down Sights
     public abstract void ADS();

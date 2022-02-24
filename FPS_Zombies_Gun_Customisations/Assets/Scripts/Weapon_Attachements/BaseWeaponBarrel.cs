@@ -8,6 +8,6 @@ public class BaseWeaponBarrel : ScriptableObject
     //Damage falloff starts
     public float damageReductionRange;
 
-    //Damage falloff percentage
-    public float damageFalloffPercentage;
+    //Damage falloff multiplier
+    [Range(0.1f, 1.0f)] public float damageFalloffMultiplier;
 }

@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WeaponFullAuto : BaseWeapon
 {
-    [Header("Base Weapon Stats")]
-    public float damage;
-    public float rateOfFire;
-
     [Header("Weapon Attachments")]
     public BaseWeaponBarrel barrel;
-    public BaseWeaponStock stock;
     public BaseWeaponGrip grip;
     public BaseWeaponMag mag;
+    public BaseWeaponStock stock;
 
     [Header("Other References")]
     public Transform cameraTransform;
     public Transform firePointTransform;
+    public GameObject tempFireHitPrefab;
+
+    [Header("UI")]
+    public TextMeshProUGUI ammoCountText;
+    public TextMeshProUGUI warningsText;
 
     //Private data
     Animator animator;
@@ -38,6 +40,9 @@ public class WeaponFullAuto : BaseWeapon
         //Set starting ammo
         currentAmmoCount = mag.magSize;
         reserveAmmoCount = currentAmmoCount * mag.additionalMagCount;
+
+        //Set UI
+        ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
     }
 
     void Update()
@@ -55,26 +60,60 @@ public class WeaponFullAuto : BaseWeapon
         //INPUT MOUSE HELD - Mouse 0 - Fire
         if (Input.GetMouseButton(0) && bCanFire)
         {
-            Fire();
+            StartCoroutine(Fire());
         }
 
         //INPUT KEY DOWN - 'R' - Reload
         if (Input.GetKeyDown(KeyCode.R) && reserveAmmoCount > 0)
         {
-            Reload();
+            StartCoroutine(Reload());
         }
     }
 
-    public override void Fire()
+    public override IEnumerator Fire()
     {
-        if (bCanFire)
+        //Prepare to save data
+        RaycastHit rayHit;
+        Physics.Raycast(firePointTransform.position, fireDirection, out rayHit, barrel.damageReductionRange * 4f);
+        bCanFire = false;
+
+        //TO-DO: Player SFX and particles
+
+
+        //If it hit something
+        if (rayHit.transform != null)
         {
-            //Auto reload
-            if (currentAmmoCount == 0 && reserveAmmoCount > 0)
+            float damageToApply = damage;
+
+            //TEMP - Spawn sphere there     TO-DO: REMOVE
+            GameObject hitPointIndicator = Instantiate(tempFireHitPrefab, rayHit.point, Quaternion.identity);
+
+            //Check distance, apply damage falloff
+            if ((rayHit.transform.position - transform.position).sqrMagnitude >= barrel.damageReductionRange * barrel.damageReductionRange)
             {
-                Reload();
+                damageToApply *= barrel.damageFalloffMultiplier;
             }
+
+            if (rayHit.collider.gameObject.CompareTag("Enemy"))
+            {
+                //TO-DO: Apply damage
+                    
+            }
+
+            //Reduce ammo count
+            currentAmmoCount--;
         }
+
+        //Auto reload
+        if (currentAmmoCount == 0 && reserveAmmoCount > 0)
+        {
+            StartCoroutine(Reload());
+        }
+
+        //Cooldown
+        yield return new WaitForSeconds(rateOfFire);
+
+        bCanFire = true;
     }
 
     public override void ADS()
@@ -89,9 +128,9 @@ public class WeaponFullAuto : BaseWeapon
     {
         animator.SetBool("bIsAiming", false);
 
+        //Fire a ray forward and fire direction goes towards the first target
         RaycastHit rayHit;
 
-        //TO-DO: Implement (geometry and math, send a raycast straight from camera, see what it hits, fire towards that)
         if (Physics.Raycast(firePointTransform.position, cameraTransform.forward, out rayHit, Mathf.Infinity))
         {
             firePointTransform.LookAt(rayHit.transform);
@@ -120,12 +159,16 @@ public class WeaponFullAuto : BaseWeapon
         currentAmmoCount = ammoTopUp;
         reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
 
-        //TO-DO: Update UI
-
+        //UI indicator
+        warningsText.text = "RELOADING";
 
         bCanFire = false;
 
         yield return new WaitForSeconds(mag.reloadTime);
+
+        //Update UI
+        ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+        warningsText.text = "RELOADING";
 
         bCanFire = true;
     }
