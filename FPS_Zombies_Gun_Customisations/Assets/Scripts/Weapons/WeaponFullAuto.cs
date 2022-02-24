@@ -195,6 +195,18 @@ public class WeaponFullAuto : BaseWeapon
         if (totalRemainingAmmo == 0)
         {
             warningsText.text = "OUT OF AMMO";
+
+            //TO-DO: Play SFX
+
+
+            //THIS CAN BE REMOVED, AND ALL CODE IN THIS if-statement afterwards if you want the OUT OF AMMO text to persist
+            yield return new WaitForSeconds(mag.reloadTime);
+
+            //Update UI
+            ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+            warningsText.text = "";
+
+            bCanFire = true;
         }
         else if (reserveAmmoCount == 0 || remainingAmmoInClip == mag.magSize)   //If trying to reload with a full mag or no reserve ammo
         {
@@ -219,6 +231,14 @@ public class WeaponFullAuto : BaseWeapon
             }
 
             bCanFire = false;
+
+            yield return new WaitForSeconds(mag.reloadTime);
+
+            //Update UI
+            ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+            warningsText.text = "";
+
+            bCanFire = true;
         }
         else
         {
@@ -238,15 +258,15 @@ public class WeaponFullAuto : BaseWeapon
             }
 
             bCanFire = false;
+
+            yield return new WaitForSeconds(mag.reloadTime);
+
+            //Update UI
+            ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+            warningsText.text = "";
+
+            bCanFire = true;
         }
-
-        yield return new WaitForSeconds(mag.reloadTime);
-
-        //Update UI
-        ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
-        warningsText.text = "";
-
-        bCanFire = true;
     }
 
     void SetNewBarrelType(BaseWeaponBarrel newBarrel)
