@@ -203,6 +203,8 @@ public class WeaponFullAuto : BaseWeapon
 
     void WeaponSway()
     {
+        //Learned how to get point in random radius from: https://answers.unity.com/questions/1719092/calculate-a-random-point-inside-a-circlehow-to-ran.html
+
         //Random sway - point in the radius
         if (bIsADSing)
         {
