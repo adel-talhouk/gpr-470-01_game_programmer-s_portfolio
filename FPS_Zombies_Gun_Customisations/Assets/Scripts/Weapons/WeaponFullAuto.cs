@@ -52,6 +52,7 @@ public class WeaponFullAuto : BaseWeapon
         //Weapon data
         originalWeaponPos = transform.position;
         swayTime = stock.weaponSwayMoveDuration;
+        //animator.SetFloat("adsSpeedMultiplier", stock.adsSpeedMultiplier);
 
         //Set UI
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
@@ -327,7 +328,7 @@ public class WeaponFullAuto : BaseWeapon
         stock = newStock;
 
         //Set values
-
+        //animator.SetFloat("adsSpeedMultiplier", newStock.adsSpeedMultiplier);
     }
 
     void SetNewGripType(BaseWeaponGrip newGrip)

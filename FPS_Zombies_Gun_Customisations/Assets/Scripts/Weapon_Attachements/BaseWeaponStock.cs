@@ -14,6 +14,6 @@ public class BaseWeaponStock : ScriptableObject
     //Sway move duration
     [Range(0.1f, 1.0f)] public float weaponSwayMoveDuration;
 
-    //Aim Down Sights speed
-    [Range(1.0f, 2.0f)] public float adsSpeedMultiplier;
+    //Aim Down Sights speed multiplier
+    [Range(0.1f, 2.0f)] public float adsSpeedMultiplier;
 }
