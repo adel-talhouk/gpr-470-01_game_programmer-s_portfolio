@@ -7,4 +7,7 @@ public class BaseWeaponStock : ScriptableObject
 {
     //Amount of weapon sway
     [Range(0.1f, 1.0f)] public float weaponSway;
+
+    //Aim Down Sights speed
+    [Range(1.0f, 2.0f)] public float adsSpeedMultiplier;
 }
