@@ -214,7 +214,7 @@ public class WeaponFullAuto : BaseWeapon
         }
 
         //Slerp position to it
-
+        Vector3.Slerp(transform.position, weaponSwayTargetPos, stock.weaponSwayMoveDuration);
     }
 
     IEnumerator Reload()
