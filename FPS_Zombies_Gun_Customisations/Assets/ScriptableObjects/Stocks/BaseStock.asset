@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BaseStock
   m_EditorClassIdentifier: 
   weaponSwayRadius: 0.5
-  weaponSwayADSMultiplier: 0.5
+  weaponSwayADSMultiplier: 0.15
   weaponSwayMoveDuration: 1
   adsSpeedMultiplier: 1.5
