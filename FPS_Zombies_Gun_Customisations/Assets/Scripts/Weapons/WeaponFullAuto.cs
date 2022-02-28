@@ -26,13 +26,14 @@ public class WeaponFullAuto : BaseWeapon
     IEnumerator fire;
     IEnumerator reload;
 
-    //Weapon sway
-    Vector3 weaponSwayTargetPos;
-    Vector3 originalWeaponPos;
-
     //---------------Mag data---------------
     int currentAmmoCount;
     int reserveAmmoCount;
+
+    //---------------Stock data---------------
+    Vector3 weaponSwayTargetPos;
+    Vector3 originalWeaponPos;
+    float swayTime;
 
     //Helper data
     bool bCanFire = true;
@@ -50,6 +51,7 @@ public class WeaponFullAuto : BaseWeapon
 
         //Weapon data
         originalWeaponPos = transform.position;
+        swayTime = stock.weaponSwayMoveDuration;
 
         //Set UI
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
@@ -201,20 +203,28 @@ public class WeaponFullAuto : BaseWeapon
 
     void WeaponSway()
     {
-
         //Random sway - point in the radius
         if (bIsADSing)
         {
             //Apply multiplier
-            weaponSwayTargetPos = originalWeaponPos + Random.insideUnitSphere * stock.weaponSwayRadius * stock.weaponSwayADSMultiplier;
+            Vector2 swayPoint = Random.insideUnitCircle * stock.weaponSwayRadius * stock.weaponSwayADSMultiplier;
+
+            weaponSwayTargetPos = originalWeaponPos + new Vector3(swayPoint.x, swayPoint.y, transform.position.z);
         }
         else
         {
-            weaponSwayTargetPos = originalWeaponPos + Random.insideUnitSphere * stock.weaponSwayRadius;
+            Vector2 swayPoint = Random.insideUnitCircle * stock.weaponSwayRadius;
+
+            weaponSwayTargetPos = originalWeaponPos + new Vector3(swayPoint.x, swayPoint.y, transform.position.z);
         }
 
         //Slerp position to it
-        Vector3.Slerp(transform.position, weaponSwayTargetPos, stock.weaponSwayMoveDuration);
+        transform.position = Vector3.Lerp(transform.position, weaponSwayTargetPos, swayTime);
+        swayTime -= Time.deltaTime;
+        if (swayTime <= 0f)
+        {
+            swayTime = stock.weaponSwayMoveDuration;
+        }
     }
 
     IEnumerator Reload()
