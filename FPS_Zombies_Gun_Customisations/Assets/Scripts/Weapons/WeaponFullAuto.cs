@@ -26,6 +26,10 @@ public class WeaponFullAuto : BaseWeapon
     IEnumerator fire;
     IEnumerator reload;
 
+    //Weapon sway
+    Vector3 weaponSwayTargetPos;
+    Vector3 originalWeaponPos;
+
     //---------------Mag data---------------
     int currentAmmoCount;
     int reserveAmmoCount;
@@ -44,6 +48,9 @@ public class WeaponFullAuto : BaseWeapon
         currentAmmoCount = mag.magSize;
         reserveAmmoCount = currentAmmoCount * mag.additionalMagCount;
 
+        //Weapon data
+        originalWeaponPos = transform.position;
+
         //Set UI
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
     }
@@ -59,6 +66,9 @@ public class WeaponFullAuto : BaseWeapon
         {
             StopADS();
         }
+
+        //Weapon Sway
+        WeaponSway();
         
         //INPUT MOUSE HELD - Mouse 0 - Fire
         if (Input.GetMouseButton(0) && bCanFire)
@@ -187,6 +197,24 @@ public class WeaponFullAuto : BaseWeapon
         animator.SetBool("bIsAiming", false);
 
         bIsADSing = false;
+    }
+
+    void WeaponSway()
+    {
+
+        //Random sway - point in the radius
+        if (bIsADSing)
+        {
+            //Apply multiplier
+            weaponSwayTargetPos = originalWeaponPos + Random.insideUnitSphere * stock.weaponSwayRadius * stock.weaponSwayADSMultiplier;
+        }
+        else
+        {
+            weaponSwayTargetPos = originalWeaponPos + Random.insideUnitSphere * stock.weaponSwayRadius;
+        }
+
+        //Slerp position to it
+
     }
 
     IEnumerator Reload()
