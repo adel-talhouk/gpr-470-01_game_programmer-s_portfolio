@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877e83ddf5bdd5b46911b298f3236058, type: 3}
   m_Name: BaseGrip
   m_EditorClassIdentifier: 
-  recoil: 1
-  adsSpeedMultiplier: 1
+  recoilStrengthX: 0.707
+  recoilStrengthY: 0.248
+  recoilReturnSnappiness: 0.526
+  recoilReturnStrength: 3.86

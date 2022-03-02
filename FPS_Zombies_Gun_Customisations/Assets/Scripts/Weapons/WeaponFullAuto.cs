@@ -35,6 +35,12 @@ public class WeaponFullAuto : BaseWeapon
     Vector3 originalWeaponPos;
     float swayTime;
 
+    //---------------Camera data---------------
+    Vector3 cameraCurrentRotation;
+    Vector3 cameraTargetRotation;
+    //float recoilTime;
+    //float recoilReturnTime;
+
     //Helper data
     bool bCanFire = true;
     bool bIsADSing = false;
@@ -54,6 +60,11 @@ public class WeaponFullAuto : BaseWeapon
         swayTime = stock.weaponSwayMoveDuration;
         //animator.SetFloat("adsSpeedMultiplier", stock.adsSpeedMultiplier);
 
+        //Camera data
+        //cameraOriginalRotation = cameraTransform.localRotation;
+        //recoilTime = grip.recoilTime;
+        //recoilReturnTime = grip.recoilReturnTime;
+
         //Set UI
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
     }
@@ -72,6 +83,9 @@ public class WeaponFullAuto : BaseWeapon
 
         //Weapon Sway
         WeaponSway();
+
+        //Lerp camera back to original position
+        LerpCameraBack();
         
         //INPUT MOUSE HELD - Mouse 0 - Fire
         if (Input.GetMouseButton(0) && bCanFire)
@@ -157,6 +171,15 @@ public class WeaponFullAuto : BaseWeapon
         //TO-DO: Player SFX and particles
 
 
+        //Recoil
+        //cameraTransform.localRotation = Quaternion.Slerp(cameraTransform.localRotation, Quaternion.Euler(90f, 0f, 0f)/* * grip.recoilStrength*/, recoilTime);
+        //recoilTime -= Time.deltaTime;
+        //if (recoilTime <= 0f)
+        //{
+        //    recoilTime = grip.recoilTime;
+        //}
+        cameraTargetRotation += new Vector3(grip.recoilStrengthX, grip.recoilStrengthY, 0f);
+
         //If it hit something
         if (rayHit.transform != null)
         {
@@ -228,6 +251,20 @@ public class WeaponFullAuto : BaseWeapon
         {
             swayTime = stock.weaponSwayMoveDuration;
         }
+    }
+
+    void LerpCameraBack()
+    {
+        //cameraTransform.localRotation = Quaternion.Slerp(cameraTransform.localRotation, cameraOriginalRotation, recoilReturnTime);
+        //recoilReturnTime -= Time.deltaTime;
+        //if (recoilReturnTime <= 0f)
+        //{
+        //    recoilReturnTime = grip.recoilReturnTime;
+        //}
+
+        cameraTargetRotation = Vector3.Lerp(cameraTargetRotation, Vector3.zero, grip.recoilReturnStrength * Time.deltaTime);
+        cameraCurrentRotation = Vector3.Slerp(cameraCurrentRotation, cameraTargetRotation, grip.recoilReturnSnappiness * Time.fixedDeltaTime);
+        cameraTransform.localRotation = Quaternion.Euler(cameraCurrentRotation);
     }
 
     IEnumerator Reload()
