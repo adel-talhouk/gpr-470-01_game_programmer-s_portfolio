@@ -178,7 +178,7 @@ public class WeaponFullAuto : BaseWeapon
         //{
         //    recoilTime = grip.recoilTime;
         //}
-        cameraTargetRotation += new Vector3(grip.recoilStrengthX, grip.recoilStrengthY, 0f);
+        cameraTargetRotation -= new Vector3(grip.recoilStrengthY, grip.recoilStrengthX, 0f);
 
         //If it hit something
         if (rayHit.transform != null)
