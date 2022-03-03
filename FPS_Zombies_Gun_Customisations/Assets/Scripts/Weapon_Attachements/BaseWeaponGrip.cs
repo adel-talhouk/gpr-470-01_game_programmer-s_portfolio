@@ -8,7 +8,6 @@ public class BaseWeaponGrip : ScriptableObject
     //Amount of recoil
     [Range(0.1f, 1.0f)] public float recoilStrengthX;
     [Range(0.1f, 1.0f)] public float recoilStrengthY;
-    //[Range(0.1f, 1.0f)] public float recoilTime;
     [Range(0.1f, 1.0f)] public float recoilReturnSnappiness;
-    [Range(0.5f, 3.0f)] public float recoilReturnStrength;
+    [Range(0.1f, 2.0f)] public float recoilReturnStrength;
 }

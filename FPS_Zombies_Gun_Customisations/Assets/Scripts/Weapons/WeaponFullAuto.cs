@@ -38,8 +38,7 @@ public class WeaponFullAuto : BaseWeapon
     //---------------Camera data---------------
     Vector3 cameraCurrentRotation;
     Vector3 cameraTargetRotation;
-    //float recoilTime;
-    //float recoilReturnTime;
+    Quaternion cameraReturnToRotation;
 
     //Helper data
     bool bCanFire = true;
@@ -132,6 +131,9 @@ public class WeaponFullAuto : BaseWeapon
         //Prepare to save data
         RaycastHit rayHit;
 
+        //Save camera transform to return to for recoil
+        cameraReturnToRotation = cameraTransform.localRotation;
+
         //Set fire direction
         if (!bIsADSing)
         {
@@ -172,12 +174,6 @@ public class WeaponFullAuto : BaseWeapon
 
 
         //Recoil
-        //cameraTransform.localRotation = Quaternion.Slerp(cameraTransform.localRotation, Quaternion.Euler(90f, 0f, 0f)/* * grip.recoilStrength*/, recoilTime);
-        //recoilTime -= Time.deltaTime;
-        //if (recoilTime <= 0f)
-        //{
-        //    recoilTime = grip.recoilTime;
-        //}
         cameraTargetRotation -= new Vector3(grip.recoilStrengthY, grip.recoilStrengthX, 0f);
 
         //If it hit something
@@ -255,14 +251,7 @@ public class WeaponFullAuto : BaseWeapon
 
     void LerpCameraBack()
     {
-        //cameraTransform.localRotation = Quaternion.Slerp(cameraTransform.localRotation, cameraOriginalRotation, recoilReturnTime);
-        //recoilReturnTime -= Time.deltaTime;
-        //if (recoilReturnTime <= 0f)
-        //{
-        //    recoilReturnTime = grip.recoilReturnTime;
-        //}
-
-        cameraTargetRotation = Vector3.Lerp(cameraTargetRotation, Vector3.zero, grip.recoilReturnStrength * Time.deltaTime);
+        cameraTargetRotation = Vector3.Lerp(cameraTargetRotation, cameraReturnToRotation * Vector3.forward, grip.recoilReturnStrength * Time.deltaTime);    //TO-DO: MAKE SURE THE QUATERNION * VEC3 WORKS - goal was to make it go back to original firing position instead of Vector3.zero, allowing for firing vertically.
         cameraCurrentRotation = Vector3.Slerp(cameraCurrentRotation, cameraTargetRotation, grip.recoilReturnSnappiness * Time.fixedDeltaTime);
         cameraTransform.localRotation = Quaternion.Euler(cameraCurrentRotation);
     }
