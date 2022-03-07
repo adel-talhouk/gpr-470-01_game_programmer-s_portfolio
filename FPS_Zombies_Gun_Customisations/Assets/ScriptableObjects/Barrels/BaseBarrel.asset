@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BaseBarrel
   m_EditorClassIdentifier: 
   damageReductionRange: 30
-  damageFalloffMultiplier: 0.75
+  damageFalloffMultiplier: 0.65

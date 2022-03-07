@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 877e83ddf5bdd5b46911b298f3236058, type: 3}
-  m_Name: BaseGrip
+  m_Script: {fileID: 11500000, guid: 539ef578211699946b5499d1e4023c14, type: 3}
+  m_Name: BetterStock
   m_EditorClassIdentifier: 
-  recoilStrengthX: 0.392
-  recoilStrengthY: 0.841
-  recoilReturnSnappiness: 0.326
-  recoilReturnStrength: 0.763
+  weaponSwayRadius: 0.2
+  weaponSwayADSMultiplier: 0.1
+  weaponSwayMoveDuration: 0.342
+  adsSpeedMultiplier: 1.5

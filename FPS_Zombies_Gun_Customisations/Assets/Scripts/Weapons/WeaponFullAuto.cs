@@ -344,9 +344,6 @@ public class WeaponFullAuto : BaseWeapon
     void SetNewBarrelType(BaseWeaponBarrel newBarrel)
     {
         barrel = newBarrel;
-
-        //Set values
-
     }
 
     void SetNewStockType(BaseWeaponStock newStock)
@@ -354,15 +351,12 @@ public class WeaponFullAuto : BaseWeapon
         stock = newStock;
 
         //Set values
-        //animator.SetFloat("adsSpeedMultiplier", newStock.adsSpeedMultiplier);
+        swayTime = stock.weaponSwayMoveDuration;
     }
 
     void SetNewGripType(BaseWeaponGrip newGrip)
     {
         grip = newGrip;
-
-        //Set values
-
     }
 
     void SetNewMagType(BaseWeaponMag newMag)
@@ -372,5 +366,8 @@ public class WeaponFullAuto : BaseWeapon
         //Set values
         currentAmmoCount = mag.magSize;
         reserveAmmoCount = currentAmmoCount * mag.additionalMagCount;
+
+        //Set UI
+        ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
     }
 }
