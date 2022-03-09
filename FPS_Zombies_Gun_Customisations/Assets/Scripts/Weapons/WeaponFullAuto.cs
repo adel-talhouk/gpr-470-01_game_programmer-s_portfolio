@@ -341,12 +341,12 @@ public class WeaponFullAuto : BaseWeapon
         }
     }
 
-    void SetNewBarrelType(BaseWeaponBarrel newBarrel)
+    public void SetNewBarrelType(BaseWeaponBarrel newBarrel)
     {
         barrel = newBarrel;
     }
 
-    void SetNewStockType(BaseWeaponStock newStock)
+    public void SetNewStockType(BaseWeaponStock newStock)
     {
         stock = newStock;
 
@@ -354,12 +354,12 @@ public class WeaponFullAuto : BaseWeapon
         swayTime = stock.weaponSwayMoveDuration;
     }
 
-    void SetNewGripType(BaseWeaponGrip newGrip)
+    public void SetNewGripType(BaseWeaponGrip newGrip)
     {
         grip = newGrip;
     }
 
-    void SetNewMagType(BaseWeaponMag newMag)
+    public void SetNewMagType(BaseWeaponMag newMag)
     {
         mag = newMag;
 
