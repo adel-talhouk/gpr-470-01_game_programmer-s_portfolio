@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 539ef578211699946b5499d1e4023c14, type: 3}
   m_Name: BetterStock
   m_EditorClassIdentifier: 
-  weaponSwayRadius: 0.2
-  weaponSwayADSMultiplier: 0.1
-  weaponSwayMoveDuration: 0.342
-  adsSpeed: 0.25
+  weaponSwayRadius: 0.662
+  weaponSwayADSMultiplier: 0.15
+  weaponSwayMoveDuration: 2.37
+  adsSpeedInverse: 0.123

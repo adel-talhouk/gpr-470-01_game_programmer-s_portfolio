@@ -49,9 +49,6 @@ public class WeaponFullAuto : BaseWeapon
 
     void Start()
     {
-        //Get components
-        //animator = GetComponent<Animator>();
-
         //Set starting ammo
         currentAmmoCount = mag.magSize;
         reserveAmmoCount = currentAmmoCount * mag.additionalMagCount;
@@ -59,13 +56,7 @@ public class WeaponFullAuto : BaseWeapon
         //Weapon data
         originalWeaponPos = transform.localPosition;
         swayTime = stock.weaponSwayMoveDuration;
-        adsTime = stock.adsSpeed;
-        //animator.SetFloat("adsSpeedMultiplier", stock.adsSpeedMultiplier);
-
-        //Camera data
-        //cameraOriginalRotation = cameraTransform.localRotation;
-        //recoilTime = grip.recoilTime;
-        //recoilReturnTime = grip.recoilReturnTime;
+        adsTime = 1f / stock.adsSpeedInverse;
 
         //Set UI
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
@@ -78,13 +69,13 @@ public class WeaponFullAuto : BaseWeapon
         {
             ADS();
         }
-        else if (Input.GetMouseButtonUp(1))
+        else
         {
             StopADS();
         }
 
         //Weapon Sway
-        //WeaponSway();
+        WeaponSway();
 
         //Lerp camera back to original position
         LerpCameraBack();
@@ -193,15 +184,9 @@ public class WeaponFullAuto : BaseWeapon
                 damageToApply *= barrel.damageFalloffMultiplier;
             }
 
-            //TO-DO: Apply damage
-            //if (rayHit.collider.gameObject.CompareTag("Enemy"))
-            //{
-            //    
-
-                //Indicate damage
-                GameObject damageIndicator = Instantiate(damageIndicatorPrefab, rayHit.point + new Vector3(0f, 2f, -2f), Quaternion.identity);
-                damageIndicator.GetComponentInChildren<TextMeshProUGUI>().text = damageToApply.ToString();
-            //}
+            //Indicate damage
+            GameObject damageIndicator = Instantiate(damageIndicatorPrefab, rayHit.point + new Vector3(0f, 2f, -2f), Quaternion.identity);
+            damageIndicator.GetComponentInChildren<TextMeshProUGUI>().text = damageToApply.ToString();
         }
 
         //Cooldown
@@ -212,40 +197,15 @@ public class WeaponFullAuto : BaseWeapon
 
     public override void ADS()
     {
-        //animator.SetBool("bIsAiming", true);
-
         //Slerp position to it
-        transform.localPosition = Vector3.Slerp(transform.localPosition, adsPointTransform.localPosition, adsTime);
-        adsTime -= Time.deltaTime;
-        if (adsTime <= 0f)
-        {
-            //adsTime = stock.adsSpeed;
-
-            bIsADSing = true;
-            return;
-        }
-
+        transform.localPosition = Vector3.Lerp(transform.localPosition, adsPointTransform.localPosition, adsTime * Time.deltaTime);
         bIsADSing = true;
     }
 
     public override void StopADS()
     {
-        //animator.SetBool("bIsAiming", false);
-
-        //Reset time
-        adsTime = stock.adsSpeed;
-
         //Slerp position to it
-        transform.localPosition = Vector3.Slerp(transform.localPosition, originalWeaponPos, adsTime);
-        adsTime -= Time.deltaTime;
-        if (adsTime <= 0f)
-        {
-            //adsTime = stock.adsSpeed;
-
-            bIsADSing = false;
-            return;
-        }
-
+        transform.localPosition = Vector3.Lerp(transform.localPosition, originalWeaponPos, adsTime * Time.deltaTime);
         bIsADSing = false;
     }
 
@@ -259,22 +219,17 @@ public class WeaponFullAuto : BaseWeapon
             //Apply multiplier
             Vector2 swayPoint = Random.insideUnitCircle * stock.weaponSwayRadius * stock.weaponSwayADSMultiplier;
 
-            weaponSwayTargetPos = originalWeaponPos + new Vector3(swayPoint.x, swayPoint.y, transform.position.z);
+            weaponSwayTargetPos = originalWeaponPos + new Vector3(swayPoint.x, swayPoint.y, 0f);
         }
         else
         {
             Vector2 swayPoint = Random.insideUnitCircle * stock.weaponSwayRadius;
 
-            weaponSwayTargetPos = originalWeaponPos + new Vector3(swayPoint.x, swayPoint.y, transform.position.z);
+            weaponSwayTargetPos = originalWeaponPos + new Vector3(swayPoint.x, swayPoint.y, 0f);
         }
 
-        //Slerp position to it
-        transform.position = Vector3.Lerp(transform.position, weaponSwayTargetPos, swayTime);
-        swayTime -= Time.deltaTime;
-        if (swayTime <= 0f)
-        {
-            swayTime = stock.weaponSwayMoveDuration;
-        }
+        //Lerp position to it
+        transform.localPosition = Vector3.Lerp(transform.localPosition, weaponSwayTargetPos, swayTime * Time.deltaTime);
     }
 
     void LerpCameraBack()
@@ -380,6 +335,7 @@ public class WeaponFullAuto : BaseWeapon
 
         //Set values
         swayTime = stock.weaponSwayMoveDuration;
+        adsTime = 1f / stock.adsSpeedInverse;
     }
 
     public void SetNewGripType(BaseWeaponGrip newGrip)

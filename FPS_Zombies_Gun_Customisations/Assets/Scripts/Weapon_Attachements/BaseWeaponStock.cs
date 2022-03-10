@@ -6,14 +6,14 @@ using UnityEngine;
 public class BaseWeaponStock : ScriptableObject
 {
     //Amount of weapon sway
-    [Range(0.01f, 0.75f)] public float weaponSwayRadius;
+    [Range(0.1f, 2f)] public float weaponSwayRadius;
 
     //ADS sway multiplier
     [Range(0.1f, 1.0f)] public float weaponSwayADSMultiplier;
 
     //Sway move duration
-    [Range(0.1f, 1.0f)] public float weaponSwayMoveDuration;
+    [Range(0.5f, 3f)] public float weaponSwayMoveDuration;
 
     //Aim Down Sights speed
-    [Range(0.1f, 2.0f)] public float adsSpeed;
+    [Range(0.1f, 1.0f)] public float adsSpeedInverse;
 }

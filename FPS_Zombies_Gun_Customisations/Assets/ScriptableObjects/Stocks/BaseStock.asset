@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 539ef578211699946b5499d1e4023c14, type: 3}
   m_Name: BaseStock
   m_EditorClassIdentifier: 
-  weaponSwayRadius: 0.5
-  weaponSwayADSMultiplier: 0.15
-  weaponSwayMoveDuration: 1
-  adsSpeed: 0.5
+  weaponSwayRadius: 1.301
+  weaponSwayADSMultiplier: 0.4
+  weaponSwayMoveDuration: 0.686
+  adsSpeedInverse: 0.41
