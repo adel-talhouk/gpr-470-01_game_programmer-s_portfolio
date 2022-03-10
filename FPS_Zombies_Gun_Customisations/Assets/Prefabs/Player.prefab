@@ -2643,6 +2643,10 @@ MonoBehaviour:
   fpCameraController: {fileID: 1139963985020102907}
   ammoCountText: {fileID: 524223055}
   warningsText: {fileID: 1845175148}
+  currentBarrelText: {fileID: 223319281493810313}
+  currentGripText: {fileID: 4480963321116210942}
+  currentMagText: {fileID: 8930493344290434754}
+  currentStockText: {fileID: 7650553865493595593}
   rangeSlider: {fileID: 8575996797425406217}
   recoilSlider: {fileID: 3850651158088723449}
   adsSpeedSlider: {fileID: 3955970491441911490}
