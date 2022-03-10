@@ -77,9 +77,9 @@ public class WeaponFullAuto : BaseWeapon
         //Weapon Sway
         WeaponSway();
 
-        //Lerp camera back to original position
+        //Lerp camera back to original position --> recoil doesn't work, so this is unnecessary. This also blocks player from being able to aim up or down
         LerpCameraBack();
-        
+
         //INPUT MOUSE HELD - Mouse 0 - Fire
         if (Input.GetMouseButton(0) && bCanFire)
         {
@@ -126,7 +126,8 @@ public class WeaponFullAuto : BaseWeapon
         RaycastHit rayHit;
 
         //Save camera transform to return to for recoil
-        cameraReturnToRotation = cameraTransform.localRotation;
+        //cameraReturnToRotation = cameraTransform.localRotation;
+        cameraReturnToRotation = firePointTransform.rotation;
 
         //Set fire direction
         if (!bIsADSing)
@@ -234,7 +235,8 @@ public class WeaponFullAuto : BaseWeapon
 
     void LerpCameraBack()
     {
-        cameraTargetRotation = Vector3.Lerp(cameraTargetRotation, cameraReturnToRotation * Vector3.forward, grip.recoilReturnStrength * Time.deltaTime);    //TO-DO: MAKE SURE THE QUATERNION * VEC3 WORKS - goal was to make it go back to original firing position instead of Vector3.zero, allowing for firing vertically.
+        //cameraTargetRotation = Vector3.Lerp(cameraTargetRotation, cameraReturnToRotation * Vector3.forward, grip.recoilReturnStrength * Time.deltaTime);
+        cameraTargetRotation = Vector3.Lerp(cameraTargetRotation, cameraReturnToRotation * cameraTransform.forward, grip.recoilReturnStrength * Time.deltaTime);
         cameraCurrentRotation = Vector3.Slerp(cameraCurrentRotation, cameraTargetRotation, grip.recoilReturnSnappiness * Time.fixedDeltaTime);
         cameraTransform.localRotation = Quaternion.Euler(cameraCurrentRotation);
     }
