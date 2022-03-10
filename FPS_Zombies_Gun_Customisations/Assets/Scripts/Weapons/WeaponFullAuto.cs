@@ -23,6 +23,12 @@ public class WeaponFullAuto : BaseWeapon
     [Header("UI")]
     public TextMeshProUGUI ammoCountText;
     public TextMeshProUGUI warningsText;
+
+    [Header("Attachments UI")]
+    public TextMeshProUGUI currentBarrelText;
+    public TextMeshProUGUI currentGripText;
+    public TextMeshProUGUI currentMagText;
+    public TextMeshProUGUI currentStockText;
     public Slider rangeSlider;
     public Slider recoilSlider;
     public Slider adsSpeedSlider;
@@ -65,6 +71,10 @@ public class WeaponFullAuto : BaseWeapon
 
         //Set UI --> slider values are modified so values are between 0 and 1!
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+        currentBarrelText.text = "Barrel: " + barrel.name;
+        currentGripText.text = "Grip: " + grip.name;
+        currentMagText.text = "Mag: " + mag.name;
+        currentStockText.text = "Stock: " + stock.name;
         rangeSlider.value = barrel.damageReductionRange * 0.01f;
         recoilSlider.value = grip.recoilStrengthX + grip.recoilStrengthY - grip.recoilReturnStrength + 1f;
         adsSpeedSlider.value = adsTime;
@@ -343,6 +353,7 @@ public class WeaponFullAuto : BaseWeapon
         barrel = newBarrel;
 
         //UI
+        currentBarrelText.text = "Barrel: " + barrel.name;
         rangeSlider.value = barrel.damageReductionRange * 0.01f;
     }
 
@@ -355,6 +366,7 @@ public class WeaponFullAuto : BaseWeapon
         adsTime = 1f / stock.adsSpeedInverse;
 
         //UI
+        currentStockText.text = "Stock: " + stock.name;
         adsSpeedSlider.value = adsTime;
         handlingSlider.value = stock.weaponSwayRadius * stock.weaponSwayMoveDuration / 6f;
     }
@@ -364,6 +376,7 @@ public class WeaponFullAuto : BaseWeapon
         grip = newGrip;
 
         //UI
+        currentGripText.text = "Grip: " + grip.name;
         recoilSlider.value = grip.recoilStrengthX + grip.recoilStrengthY - grip.recoilReturnStrength + 1f;
     }
 
@@ -376,6 +389,7 @@ public class WeaponFullAuto : BaseWeapon
         reserveAmmoCount = currentAmmoCount * mag.additionalMagCount;
 
         //Set UI
+        currentMagText.text = "Mag: " + mag.name;
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
     }
 }
