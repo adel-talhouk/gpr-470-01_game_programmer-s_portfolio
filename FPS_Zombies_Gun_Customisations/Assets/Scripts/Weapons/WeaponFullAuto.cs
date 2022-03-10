@@ -77,7 +77,7 @@ public class WeaponFullAuto : BaseWeapon
         currentStockText.text = "Stock: " + stock.name;
         rangeSlider.value = barrel.damageReductionRange * 0.01f;
         recoilSlider.value = grip.recoilStrengthX + grip.recoilStrengthY - grip.recoilReturnStrength + 1f;
-        adsSpeedSlider.value = adsTime;
+        adsSpeedSlider.value = Mathf.Abs(1f - stock.adsSpeedInverse);
         handlingSlider.value = stock.weaponSwayRadius * stock.weaponSwayMoveDuration / 6f;
     }
 
@@ -367,7 +367,7 @@ public class WeaponFullAuto : BaseWeapon
 
         //UI
         currentStockText.text = "Stock: " + stock.name;
-        adsSpeedSlider.value = adsTime;
+        adsSpeedSlider.value = Mathf.Abs(1f - stock.adsSpeedInverse);
         handlingSlider.value = stock.weaponSwayRadius * stock.weaponSwayMoveDuration / 6f;
     }
 
