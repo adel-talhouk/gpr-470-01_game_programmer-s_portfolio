@@ -17,13 +17,13 @@ public class WeaponFullAuto : BaseWeapon
     public Transform adsPointTransform;
     public GameObject tempFireHitPrefab;
     public GameObject damageIndicatorPrefab;
+    public FirstPersonCameraController fpCameraController;
 
     [Header("UI")]
     public TextMeshProUGUI ammoCountText;
     public TextMeshProUGUI warningsText;
 
     //Private data
-    //Animator animator;
     IEnumerator fire;
     IEnumerator reload;
 
@@ -64,6 +64,9 @@ public class WeaponFullAuto : BaseWeapon
 
     void Update()
     {
+        if (fpCameraController.BMenuIsOpen)
+            return;
+
         //INPUT MOUSE HELD - Mouse 1 - Aim Down Sights
         if (Input.GetMouseButton(1))
         {
@@ -233,7 +236,7 @@ public class WeaponFullAuto : BaseWeapon
         transform.localPosition = Vector3.Lerp(transform.localPosition, weaponSwayTargetPos, swayTime * Time.deltaTime);
     }
 
-    void LerpCameraBack()
+    void LerpCameraBack()   //TO-DO: Let it allow me to fire up or down
     {
         //cameraTargetRotation = Vector3.Lerp(cameraTargetRotation, cameraReturnToRotation * Vector3.forward, grip.recoilReturnStrength * Time.deltaTime);
         cameraTargetRotation = Vector3.Lerp(cameraTargetRotation, cameraReturnToRotation * cameraTransform.forward, grip.recoilReturnStrength * Time.deltaTime);
