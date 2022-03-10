@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class WeaponFullAuto : BaseWeapon
@@ -22,6 +23,10 @@ public class WeaponFullAuto : BaseWeapon
     [Header("UI")]
     public TextMeshProUGUI ammoCountText;
     public TextMeshProUGUI warningsText;
+    public Slider rangeSlider;
+    public Slider recoilSlider;
+    public Slider adsSpeedSlider;
+    public Slider handlingSlider;
 
     //Private data
     IEnumerator fire;
@@ -58,8 +63,12 @@ public class WeaponFullAuto : BaseWeapon
         swayTime = stock.weaponSwayMoveDuration;
         adsTime = 1f / stock.adsSpeedInverse;
 
-        //Set UI
+        //Set UI --> slider values are modified so values are between 0 and 1!
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+        rangeSlider.value = barrel.damageReductionRange * 0.01f;
+        recoilSlider.value = grip.recoilStrengthX + grip.recoilStrengthY - grip.recoilReturnStrength + 1f;
+        adsSpeedSlider.value = adsTime;
+        handlingSlider.value = stock.weaponSwayRadius * stock.weaponSwayMoveDuration / 6f;
     }
 
     void Update()
@@ -332,6 +341,9 @@ public class WeaponFullAuto : BaseWeapon
     public void SetNewBarrelType(BaseWeaponBarrel newBarrel)
     {
         barrel = newBarrel;
+
+        //UI
+        rangeSlider.value = barrel.damageReductionRange * 0.01f;
     }
 
     public void SetNewStockType(BaseWeaponStock newStock)
@@ -341,11 +353,18 @@ public class WeaponFullAuto : BaseWeapon
         //Set values
         swayTime = stock.weaponSwayMoveDuration;
         adsTime = 1f / stock.adsSpeedInverse;
+
+        //UI
+        adsSpeedSlider.value = adsTime;
+        handlingSlider.value = stock.weaponSwayRadius * stock.weaponSwayMoveDuration / 6f;
     }
 
     public void SetNewGripType(BaseWeaponGrip newGrip)
     {
         grip = newGrip;
+
+        //UI
+        recoilSlider.value = grip.recoilStrengthX + grip.recoilStrengthY - grip.recoilReturnStrength + 1f;
     }
 
     public void SetNewMagType(BaseWeaponMag newMag)

@@ -6,7 +6,7 @@ using UnityEngine;
 public class BaseWeaponBarrel : ScriptableObject
 {
     //Damage falloff starts
-    public float damageReductionRange;
+    [Range(1f, 100f)] public float damageReductionRange;
 
     //Damage falloff multiplier
     [Range(0.1f, 1.0f)] public float damageFalloffMultiplier;
