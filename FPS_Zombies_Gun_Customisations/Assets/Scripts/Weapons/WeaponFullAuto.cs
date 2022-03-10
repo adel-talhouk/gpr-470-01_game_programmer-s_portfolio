@@ -14,6 +14,7 @@ public class WeaponFullAuto : BaseWeapon
     [Header("Other References")]
     public Transform cameraTransform;
     public Transform firePointTransform;
+    public Transform adsPointTransform;
     public GameObject tempFireHitPrefab;
     public GameObject damageIndicatorPrefab;
 
@@ -22,7 +23,7 @@ public class WeaponFullAuto : BaseWeapon
     public TextMeshProUGUI warningsText;
 
     //Private data
-    Animator animator;
+    //Animator animator;
     IEnumerator fire;
     IEnumerator reload;
 
@@ -34,6 +35,7 @@ public class WeaponFullAuto : BaseWeapon
     Vector3 weaponSwayTargetPos;
     Vector3 originalWeaponPos;
     float swayTime;
+    float adsTime;
 
     //---------------Camera data---------------
     Vector3 cameraCurrentRotation;
@@ -48,15 +50,16 @@ public class WeaponFullAuto : BaseWeapon
     void Start()
     {
         //Get components
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
 
         //Set starting ammo
         currentAmmoCount = mag.magSize;
         reserveAmmoCount = currentAmmoCount * mag.additionalMagCount;
 
         //Weapon data
-        originalWeaponPos = transform.position;
+        originalWeaponPos = transform.localPosition;
         swayTime = stock.weaponSwayMoveDuration;
+        adsTime = stock.adsSpeed;
         //animator.SetFloat("adsSpeedMultiplier", stock.adsSpeedMultiplier);
 
         //Camera data
@@ -75,13 +78,13 @@ public class WeaponFullAuto : BaseWeapon
         {
             ADS();
         }
-        else
+        else if (Input.GetMouseButtonUp(1))
         {
             StopADS();
         }
 
         //Weapon Sway
-        WeaponSway();
+        //WeaponSway();
 
         //Lerp camera back to original position
         LerpCameraBack();
@@ -209,14 +212,39 @@ public class WeaponFullAuto : BaseWeapon
 
     public override void ADS()
     {
-        animator.SetBool("bIsAiming", true);
+        //animator.SetBool("bIsAiming", true);
+
+        //Slerp position to it
+        transform.localPosition = Vector3.Slerp(transform.localPosition, adsPointTransform.localPosition, adsTime);
+        adsTime -= Time.deltaTime;
+        if (adsTime <= 0f)
+        {
+            //adsTime = stock.adsSpeed;
+
+            bIsADSing = true;
+            return;
+        }
 
         bIsADSing = true;
     }
 
     public override void StopADS()
     {
-        animator.SetBool("bIsAiming", false);
+        //animator.SetBool("bIsAiming", false);
+
+        //Reset time
+        adsTime = stock.adsSpeed;
+
+        //Slerp position to it
+        transform.localPosition = Vector3.Slerp(transform.localPosition, originalWeaponPos, adsTime);
+        adsTime -= Time.deltaTime;
+        if (adsTime <= 0f)
+        {
+            //adsTime = stock.adsSpeed;
+
+            bIsADSing = false;
+            return;
+        }
 
         bIsADSing = false;
     }

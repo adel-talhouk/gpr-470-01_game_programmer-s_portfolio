@@ -768,6 +768,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4655529613219471429}
+  - {fileID: 3579004949326314024}
   m_Father: {fileID: 1529907424482315049}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1133,6 +1134,37 @@ RectTransform:
   m_AnchoredPosition: {x: -126.45927, y: -50.787025}
   m_SizeDelta: {x: 213.0048, y: 342.19}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2019536861442141100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3579004949326314024}
+  m_Layer: 0
+  m_Name: ADSTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3579004949326314024
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019536861442141100}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.011, y: -0.25, z: 0.363}
+  m_LocalScale: {x: 0.2, y: 0.42871884, z: 0.20000002}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1529907423872830374}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &2304328799816840022
 GameObject:
   m_ObjectHideFlags: 0
@@ -1978,6 +2010,7 @@ MonoBehaviour:
   stock: {fileID: 11400000, guid: 5f77a4b1073621d4f8ee78dde74f3c6c, type: 2}
   cameraTransform: {fileID: 1529907423872830374}
   firePointTransform: {fileID: 1275943928}
+  adsPointTransform: {fileID: 3579004949326314024}
   tempFireHitPrefab: {fileID: 1777694945669258065, guid: 86ff26fbe9e4fc647a9b8aeabdc8da29, type: 3}
   damageIndicatorPrefab: {fileID: 7718675745279693184, guid: fe68b00e4d4df4b479a1e931cc2469d6, type: 3}
   ammoCountText: {fileID: 524223055}
@@ -2945,7 +2978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4320787236329186008
 RectTransform:
   m_ObjectHideFlags: 0

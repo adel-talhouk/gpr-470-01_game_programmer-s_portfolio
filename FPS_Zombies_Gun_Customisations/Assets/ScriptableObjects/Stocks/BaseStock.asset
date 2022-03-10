@@ -15,4 +15,4 @@ MonoBehaviour:
   weaponSwayRadius: 0.5
   weaponSwayADSMultiplier: 0.15
   weaponSwayMoveDuration: 1
-  adsSpeedMultiplier: 0.75
+  adsSpeed: 0.5
