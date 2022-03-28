@@ -33,11 +33,18 @@ public abstract class BaseWeapon : MonoBehaviour
     [SerializeField] [Range(0.1f, 1.0f)] protected float base_adsSpeed;
 
     [Header("Misc.")]
-    [SerializeField] protected Transform base_firePointTransform;
     [SerializeField] protected Transform base_cameraTransform;
-    [SerializeField] protected Transform base_adsPointTransform;
     [SerializeField] protected GameObject base_tempFireHitPrefab;
     [SerializeField] protected GameObject base_damageIndicatorPrefab;
+    protected Transform base_firePointTransform;
+    protected Transform base_adsPointTransform;
+
+    //Setup weapon stuff here
+    void Awake()
+    {
+        base_firePointTransform = transform.Find("FirePoint");
+        base_adsPointTransform = transform.Find("ADSPoint");
+    }
 
     //Derived methods
     protected abstract IEnumerator Fire();
