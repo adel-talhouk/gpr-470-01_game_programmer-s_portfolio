@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseWeapon : ScriptableObject
+public abstract class BaseWeapon : MonoBehaviour
 {
     [Header("Damage")]
     [SerializeField] [Range(10, 100)] protected int base_damageValue = 35;
     [SerializeField] [Range(1f, 2f)] protected float base_headshotDamageMultiplier = 2f;
+    [Range(0.05f, 2.0f)] public float base_rateOfFire;
 
     [Space(15)]
     [Header("Attackment Data")]
@@ -29,7 +30,14 @@ public abstract class BaseWeapon : ScriptableObject
     [SerializeField] [Range(0.1f, 2f)] protected float base_weaponSwayRadius;
     [SerializeField] [Range(0.1f, 1.0f)] protected float base_weaponSwayADSMultiplier;
     [SerializeField] [Range(0.5f, 3f)] protected float base_weaponSwayMoveDuration;
-    [SerializeField] [Range(0.1f, 1.0f)] protected float base_adsSpeedInverse;
+    [SerializeField] [Range(0.1f, 1.0f)] protected float base_adsSpeed;
+
+    [Header("Misc.")]
+    [SerializeField] protected Transform base_firePointTransform;
+    [SerializeField] protected Transform base_cameraTransform;
+    [SerializeField] protected Transform base_adsPointTransform;
+    [SerializeField] protected GameObject base_tempFireHitPrefab;
+    [SerializeField] protected GameObject base_damageIndicatorPrefab;
 
     //Derived methods
     protected abstract IEnumerator Fire();
