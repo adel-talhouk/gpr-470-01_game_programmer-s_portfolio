@@ -137,9 +137,6 @@ public class WeaponFullAuto : BaseWeapon
         {
             float damageToApply = base_damageValue;
 
-            //TEMP - Spawn sphere there     TO-DO: REMOVE
-            GameObject hitPointIndicator = Instantiate(base_tempFireHitPrefab, rayHit.point, Quaternion.identity);
-
             //Check distance, apply damage falloff
             if ((rayHit.transform.position - transform.position).sqrMagnitude >= base_damageReductionRange * base_damageReductionRange)
             {
@@ -147,7 +144,7 @@ public class WeaponFullAuto : BaseWeapon
             }
 
             //Indicate damage
-            GameObject damageIndicator = Instantiate(base_damageIndicatorPrefab, rayHit.point + new Vector3(0f, 2f, -2f), Quaternion.identity);
+            GameObject damageIndicator = Instantiate(base_damageIndicatorPrefab, rayHit.point, Quaternion.identity);
             damageIndicator.GetComponentInChildren<TextMeshProUGUI>().text = damageToApply.ToString();
         }
 

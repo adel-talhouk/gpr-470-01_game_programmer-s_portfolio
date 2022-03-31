@@ -34,7 +34,6 @@ public abstract class BaseWeapon : MonoBehaviour
 
     [Header("Misc.")]
     [SerializeField] protected Transform base_cameraTransform;
-    [SerializeField] protected GameObject base_tempFireHitPrefab;
     [SerializeField] protected GameObject base_damageIndicatorPrefab;
     protected Transform base_firePointTransform;
     protected Transform base_adsPointTransform;
