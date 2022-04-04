@@ -15,9 +15,7 @@ public class WeaponPistol : BaseWeapon
 
     //Firing and ADSing
     bool bCanFire = true;
-    bool bIsADSing = false;
     Vector3 fireDirection;
-    Vector3 originalWeaponPos;
 
     //Coroutines
     IEnumerator fire;
@@ -31,8 +29,6 @@ public class WeaponPistol : BaseWeapon
         reserveAmmoCount = base_magSize * base_additionalMagCount;
 
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
-
-        originalWeaponPos = transform.localPosition;
     }
 
     // Update is called once per frame
@@ -48,8 +44,8 @@ public class WeaponPistol : BaseWeapon
             StopADS();
         }
 
-        //INPUT MOUSE HELD - Mouse 0 - Fire
-        if (Input.GetMouseButton(0) && bCanFire)
+        //INPUT MOUSE DOWN - Mouse 0 - Fire
+        if (Input.GetMouseButtonDown(0) && bCanFire)
         {
             //If trying to shoot with no ammo left
             if (currentAmmoCount + reserveAmmoCount == 0)
@@ -94,7 +90,7 @@ public class WeaponPistol : BaseWeapon
         RaycastHit rayHit;
 
         //Set fire direction
-        if (!bIsADSing)
+        if (!base_bIsADSing)
         {
             //Fire a ray forward and fire direction goes towards the first target within max range
             if (Physics.Raycast(base_firePointTransform.position, base_cameraTransform.forward, out rayHit, base_damageReductionRange * 4f))
@@ -236,19 +232,5 @@ public class WeaponPistol : BaseWeapon
 
             bCanFire = true;
         }
-    }
-
-    protected override void ADS()
-    {
-        //Slerp position to it
-        transform.localPosition = Vector3.Lerp(transform.localPosition, base_adsPointTransform.localPosition, base_adsSpeed * Time.deltaTime);
-        bIsADSing = true;
-    }
-
-    protected override void StopADS()
-    {
-        //Slerp position to it
-        transform.localPosition = Vector3.Lerp(transform.localPosition, originalWeaponPos, base_adsSpeed * Time.deltaTime);
-        bIsADSing = false;
     }
 }

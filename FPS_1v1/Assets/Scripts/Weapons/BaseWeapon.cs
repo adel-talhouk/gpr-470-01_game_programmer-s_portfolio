@@ -35,19 +35,37 @@ public abstract class BaseWeapon : MonoBehaviour
     [Header("Misc.")]
     [SerializeField] protected Transform base_cameraTransform;
     [SerializeField] protected GameObject base_damageIndicatorPrefab;
+    [SerializeField] protected Transform base_adsPointTransform;
     protected Transform base_firePointTransform;
-    protected Transform base_adsPointTransform;
+
+    //Helper data
+    protected bool base_bIsADSing = false;
+    Vector3 originalWeaponPos;
 
     //Setup weapon stuff here
     void Awake()
     {
         base_firePointTransform = transform.Find("FirePoint");
-        base_adsPointTransform = transform.Find("ADSPoint");
+
+        originalWeaponPos = transform.localPosition;
+
     }
 
     //Derived methods
     protected abstract IEnumerator Fire();
     protected abstract IEnumerator Reload();
-    protected abstract void ADS();
-    protected abstract void StopADS();
+
+    protected void ADS()
+    {
+        //Slerp position to it
+        transform.localPosition = Vector3.Lerp(transform.localPosition, base_adsPointTransform.localPosition, base_adsSpeed * Time.deltaTime * 10f);
+        base_bIsADSing = true;
+    }
+
+    protected void StopADS()
+    {
+        //Slerp position to it
+        transform.localPosition = Vector3.Lerp(transform.localPosition, originalWeaponPos, base_adsSpeed * Time.deltaTime * 10f);
+        base_bIsADSing = false;
+    }
 }

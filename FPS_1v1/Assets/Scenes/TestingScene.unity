@@ -335,6 +335,7 @@ MonoBehaviour:
   base_adsSpeed: 0.4
   base_cameraTransform: {fileID: 963194228}
   base_damageIndicatorPrefab: {fileID: 6557344065374388262, guid: b7bd662c2b1dab44793bb9bf584239ef, type: 3}
+  base_adsPointTransform: {fileID: 1387541853}
   ammoCountText: {fileID: 398030867}
   warningsText: {fileID: 1029894216}
 --- !u!1 &290589902
@@ -1300,9 +1301,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387541852}
-  m_LocalRotation: {x: 0.70709825, y: -0.003484635, z: 0.003484624, w: 0.70709825}
+  m_LocalRotation: {x: 0.70709825, y: -0.0034846347, z: 0.003484624, w: 0.70709825}
   m_LocalPosition: {x: 0, y: 0.169, z: 0.623}
-  m_LocalScale: {x: 0.20000002, y: 0.19999997, z: 0.19999999}
+  m_LocalScale: {x: 0.20000002, y: 0.19999999, z: 0.19999997}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1578608469}
