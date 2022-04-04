@@ -9,6 +9,9 @@ public class WeaponPistol : BaseWeapon
     public TextMeshProUGUI ammoCountText;
     public TextMeshProUGUI warningsText;
 
+    //Component(s)
+    Health healthScript;
+
     //Private data
     int currentAmmoCount;
     int reserveAmmoCount;
@@ -28,29 +31,56 @@ public class WeaponPistol : BaseWeapon
         currentAmmoCount = base_magSize;
         reserveAmmoCount = base_magSize * base_additionalMagCount;
 
+        healthScript = GetComponent<Health>();
+
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //INPUT MOUSE HELD - Mouse 1 - Aim Down Sights
-        if (Input.GetMouseButton(1))
+        if (healthScript.BIsAlive)
         {
-            ADS();
-        }
-        else
-        {
-            StopADS();
-        }
-
-        //INPUT MOUSE DOWN - Mouse 0 - Fire
-        if (Input.GetMouseButtonDown(0) && bCanFire)
-        {
-            //If trying to shoot with no ammo left
-            if (currentAmmoCount + reserveAmmoCount == 0)
+            //INPUT MOUSE HELD - Mouse 1 - Aim Down Sights
+            if (Input.GetMouseButton(1))
             {
-                //Reload - indicate there is no ammo left
+                ADS();
+            }
+            else
+            {
+                StopADS();
+            }
+
+            //INPUT MOUSE DOWN - Mouse 0 - Fire
+            if (Input.GetMouseButtonDown(0) && bCanFire)
+            {
+                //If trying to shoot with no ammo left
+                if (currentAmmoCount + reserveAmmoCount == 0)
+                {
+                    //Reload - indicate there is no ammo left
+                    if (reload != null)
+                    {
+                        StopCoroutine(reload);
+                    }
+
+                    reload = Reload();
+                    StartCoroutine(Reload());
+                }
+                else
+                {
+                    if (fire != null)
+                    {
+                        StopCoroutine(fire);
+                    }
+
+                    fire = Fire();
+                    StartCoroutine(fire);
+                }
+            }
+
+            //INPUT KEY DOWN - 'R' - Reload
+            if (Input.GetKeyDown(KeyCode.R))
+            {
                 if (reload != null)
                 {
                     StopCoroutine(reload);
@@ -59,28 +89,6 @@ public class WeaponPistol : BaseWeapon
                 reload = Reload();
                 StartCoroutine(Reload());
             }
-            else
-            {
-                if (fire != null)
-                {
-                    StopCoroutine(fire);
-                }
-
-                fire = Fire();
-                StartCoroutine(fire);
-            }
-        }
-
-        //INPUT KEY DOWN - 'R' - Reload
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if (reload != null)
-            {
-                StopCoroutine(reload);
-            }
-
-            reload = Reload();
-            StartCoroutine(Reload());
         }
     }
 
@@ -136,6 +144,12 @@ public class WeaponPistol : BaseWeapon
             if ((rayHit.transform.position - transform.position).sqrMagnitude >= base_damageReductionRange * base_damageReductionRange)
             {
                 damageToApply *= base_damageFalloffMultiplier;
+            }
+
+            //Check headshot
+            if (rayHit.transform.CompareTag("Hitbox_Head"))
+            {
+                damageToApply *= base_headshotDamageMultiplier;
             }
 
             //Indicate damage

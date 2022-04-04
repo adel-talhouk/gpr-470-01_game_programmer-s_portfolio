@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     CapsuleCollider capsuleCol;
     Transform groundCheckTransform;
+    Health healthScript;
 
     //Helper data - Movement
     float xMove;
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         capsuleCol = GetComponent<CapsuleCollider>();
         groundCheckTransform = transform.Find("GroundCheck");
+        healthScript = GetComponent<Health>();
 
         originalCapsuleColHeight = capsuleCol.height;
         originalGroundCheckLocalPos = groundCheckTransform.localPosition;
@@ -46,12 +48,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Get input
-        GetInput();
+        if (healthScript.BIsAlive)
+        {
+            //Get input
+            GetInput();
 
-        //Move - If-statement to increase efficiency - don't make a new Vector3 if you don't have to
-        if (xMove != 0 || zMove != 0)
-            rb.velocity = new Vector3 (0f, rb.velocity.y, 0f) + transform.TransformDirection(new Vector3(xMove, 0f, zMove)) * moveSpeed * Time.deltaTime * 100f;
+            //Move - If-statement to increase efficiency - don't make a new Vector3 if you don't have to
+            if (xMove != 0 || zMove != 0)
+                rb.velocity = new Vector3(0f, rb.velocity.y, 0f) + transform.TransformDirection(new Vector3(xMove, 0f, zMove)) * moveSpeed * Time.deltaTime * 100f;
+
+        }
     }
 
     void FixedUpdate()
