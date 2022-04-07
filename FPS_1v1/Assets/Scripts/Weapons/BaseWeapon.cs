@@ -51,10 +51,11 @@ public abstract class BaseWeapon : MonoBehaviour
     }
 
     //Public shared methods
+    public abstract void EnableWeapon();
     public abstract void DisableWeapon();
 
     //Derived methods
-    public abstract void UpdateCurrentWeaponUI();
+    //public abstract void UpdateCurrentWeaponUI();
     protected abstract IEnumerator Fire();
     protected abstract IEnumerator Reload();
 

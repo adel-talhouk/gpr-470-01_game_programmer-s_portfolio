@@ -34,7 +34,9 @@ public class WeaponFullAuto : BaseWeapon
 
         healthScript = transform.root.GetComponent<Health>();
 
-        UpdateCurrentWeaponUI();
+        //UpdateCurrentWeaponUI();
+        ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+        weaponNameText.text = gameObject.name;
     }
 
     // Update is called once per frame
@@ -201,9 +203,9 @@ public class WeaponFullAuto : BaseWeapon
         {
             ammoTopUp = base_magSize;
 
-            //Update ammo count and reserve ammo count
-            currentAmmoCount = ammoTopUp;
-            reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
+            ////Update ammo count and reserve ammo count
+            //currentAmmoCount = ammoTopUp;
+            //reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
 
             //UI indicator
             warningsText.text = "RELOADING";
@@ -217,6 +219,10 @@ public class WeaponFullAuto : BaseWeapon
             bCanFire = false;
 
             yield return new WaitForSeconds(base_reloadTime);
+
+            //Update ammo count and reserve ammo count
+            currentAmmoCount = ammoTopUp;
+            reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
 
             //Update UI
             ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
@@ -228,9 +234,9 @@ public class WeaponFullAuto : BaseWeapon
         {
             ammoTopUp = totalRemainingAmmo;
 
-            //Update ammo count and reserve ammo count
-            currentAmmoCount = ammoTopUp;
-            reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
+            ////Update ammo count and reserve ammo count
+            //currentAmmoCount = ammoTopUp;
+            //reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
 
             //UI indicator
             warningsText.text = "RELOADING";
@@ -245,6 +251,10 @@ public class WeaponFullAuto : BaseWeapon
 
             yield return new WaitForSeconds(base_reloadTime);
 
+            //Update ammo count and reserve ammo count
+            currentAmmoCount = ammoTopUp;
+            reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
+
             //Update UI
             ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
             warningsText.text = "";
@@ -253,8 +263,19 @@ public class WeaponFullAuto : BaseWeapon
         }
     }
 
-    public override void UpdateCurrentWeaponUI()
+    //public override void UpdateCurrentWeaponUI()
+    //{
+    //    ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+    //    weaponNameText.text = gameObject.name;
+    //}
+
+    public override void EnableWeapon()
     {
+        //Reload if empty
+        if (currentAmmoCount == 0)
+            StartCoroutine(Reload());
+
+        //Update UI
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
         weaponNameText.text = gameObject.name;
     }

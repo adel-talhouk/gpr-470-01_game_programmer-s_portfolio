@@ -41,7 +41,8 @@ public class WeaponManager : MonoBehaviour
             //Enable next weapon
             currentWeaponIndex = (currentWeaponIndex + 1) % 2;
             weaponsArray[currentWeaponIndex].gameObject.SetActive(true);
-            weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
+            //weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
+            weaponsArray[currentWeaponIndex].EnableWeapon();
 
             //Start cooldown
             StartCoroutine(WeaponSwapCooldown());
@@ -58,7 +59,8 @@ public class WeaponManager : MonoBehaviour
             //Enable next weapon
             currentWeaponIndex = (currentWeaponIndex + 1) % 2;
             weaponsArray[currentWeaponIndex].gameObject.SetActive(true);
-            weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
+            //weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
+            weaponsArray[currentWeaponIndex].EnableWeapon();
 
             //Start cooldown
             StartCoroutine(WeaponSwapCooldown());
@@ -75,7 +77,8 @@ public class WeaponManager : MonoBehaviour
             //Enable previous weapon
             currentWeaponIndex = Mathf.Abs(currentWeaponIndex - 1) % 2;
             weaponsArray[currentWeaponIndex].gameObject.SetActive(true);
-            weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
+            //weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
+            weaponsArray[currentWeaponIndex].EnableWeapon();
 
             //Start cooldown
             StartCoroutine(WeaponSwapCooldown());
