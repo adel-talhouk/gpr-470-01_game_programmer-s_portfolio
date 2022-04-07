@@ -34,6 +34,7 @@ public class WeaponManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab) && bCanSwapWeapons)
         {
             //Disable current weapon
+            weaponsArray[currentWeaponIndex].StopAllCoroutines();
             weaponsArray[currentWeaponIndex].gameObject.SetActive(false);
 
             //Enable next weapon
@@ -49,6 +50,7 @@ public class WeaponManager : MonoBehaviour
         if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f && bCanSwapWeapons)
         {
             //Disable current weapon
+            weaponsArray[currentWeaponIndex].StopAllCoroutines();
             weaponsArray[currentWeaponIndex].gameObject.SetActive(false);
 
             //Enable next weapon
@@ -64,6 +66,7 @@ public class WeaponManager : MonoBehaviour
         if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f && bCanSwapWeapons)
         {
             //Disable current weapon
+            weaponsArray[currentWeaponIndex].StopAllCoroutines();
             weaponsArray[currentWeaponIndex].gameObject.SetActive(false);
 
             //Enable previous weapon
