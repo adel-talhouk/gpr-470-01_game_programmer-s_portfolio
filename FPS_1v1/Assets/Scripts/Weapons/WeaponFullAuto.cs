@@ -258,4 +258,11 @@ public class WeaponFullAuto : BaseWeapon
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
         weaponNameText.text = gameObject.name;
     }
+
+    public override void DisableWeapon()
+    {
+        StopAllCoroutines();
+        bCanFire = true;
+        warningsText.text = "";
+    }
 }

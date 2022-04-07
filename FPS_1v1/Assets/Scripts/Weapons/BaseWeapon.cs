@@ -48,8 +48,10 @@ public abstract class BaseWeapon : MonoBehaviour
         base_firePointTransform = transform.Find("FirePoint");
 
         originalWeaponPos = transform.localPosition;
-
     }
+
+    //Public shared methods
+    public abstract void DisableWeapon();
 
     //Derived methods
     public abstract void UpdateCurrentWeaponUI();
