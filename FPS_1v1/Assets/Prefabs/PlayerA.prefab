@@ -1323,7 +1323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2fc1ddc79d74804dbb90040faa21e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 100
+  mouseSensitivity: 250
 --- !u!1 &8097927034588935513
 GameObject:
   m_ObjectHideFlags: 0
@@ -1371,8 +1371,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9367e6cb6b9fb34db2d4814d6ce0bd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primaryWeapon: {fileID: 8097927034058999383}
-  secondaryWeapon: {fileID: 0}
 --- !u!1 &8097927034669902776
 GameObject:
   m_ObjectHideFlags: 0

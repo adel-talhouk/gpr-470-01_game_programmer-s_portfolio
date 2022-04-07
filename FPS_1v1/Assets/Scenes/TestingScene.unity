@@ -640,5 +640,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerA
       objectReference: {fileID: 0}
+    - target: {fileID: 8097927034837027503, guid: 3bba5403cd9e0a14e91d21a69c926c7e, type: 3}
+      propertyPath: moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097927034837027503, guid: 3bba5403cd9e0a14e91d21a69c926c7e, type: 3}
+      propertyPath: sprintSpeedMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bba5403cd9e0a14e91d21a69c926c7e, type: 3}
