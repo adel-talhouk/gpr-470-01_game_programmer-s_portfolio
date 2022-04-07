@@ -7,6 +7,7 @@ public class WeaponPistol : BaseWeapon
 {
     [Header("UI Indicators")]
     public TextMeshProUGUI ammoCountText;
+    public TextMeshProUGUI weaponNameText;
     public TextMeshProUGUI warningsText;
 
     //Component(s)
@@ -33,7 +34,7 @@ public class WeaponPistol : BaseWeapon
 
         healthScript = transform.root.GetComponent<Health>();
 
-        ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+        UpdateCurrentWeaponUI();
     }
 
     // Update is called once per frame
@@ -249,5 +250,11 @@ public class WeaponPistol : BaseWeapon
 
             bCanFire = true;
         }
+    }
+
+    public override void UpdateCurrentWeaponUI()
+    {
+        ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
+        weaponNameText.text = gameObject.name;
     }
 }

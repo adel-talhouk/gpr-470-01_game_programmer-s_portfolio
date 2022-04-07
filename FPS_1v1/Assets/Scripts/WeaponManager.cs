@@ -10,8 +10,6 @@ public class WeaponManager : MonoBehaviour
 
     //Weapons
     BaseWeapon[] weaponsArray = new BaseWeapon[2];
-    //BaseWeapon primaryWeapon;
-    //BaseWeapon secondaryWeapon;
 
     //Helper data
     bool bCanSwapWeapons = true;
@@ -21,14 +19,10 @@ public class WeaponManager : MonoBehaviour
     void Start()
     {
         //Set weapons
-        //primaryWeapon = transform.GetChild(0).GetComponent<BaseWeapon>();
-        //secondaryWeapon = transform.GetChild(1).GetComponent<BaseWeapon>();
         weaponsArray[0] = transform.GetChild(0).GetComponent<BaseWeapon>();
         weaponsArray[1] = transform.GetChild(1).GetComponent<BaseWeapon>();
 
         //Set primary weapon as active by default
-        //primaryWeapon.gameObject.SetActive(true);
-        //secondaryWeapon.gameObject.SetActive(false);
         weaponsArray[0].gameObject.SetActive(true);
         weaponsArray[1].gameObject.SetActive(false);
     }
@@ -39,42 +33,45 @@ public class WeaponManager : MonoBehaviour
         //INPUT - KEY DOWN - TAB - Swap weapons
         if (Input.GetKeyDown(KeyCode.Tab) && bCanSwapWeapons)
         {
-            //Swap active state
-            //primaryWeapon.gameObject.SetActive(!primaryWeapon.gameObject.activeSelf);
-            //secondaryWeapon.gameObject.SetActive(!secondaryWeapon.gameObject.activeSelf);
-
+            //Disable current weapon
             weaponsArray[currentWeaponIndex].gameObject.SetActive(false);
 
+            //Enable next weapon
             currentWeaponIndex = (currentWeaponIndex + 1) % 2;
-
             weaponsArray[currentWeaponIndex].gameObject.SetActive(true);
+            weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
 
+            //Start cooldown
             StartCoroutine(WeaponSwapCooldown());
         }
 
         //INPUT - AXIS RAW - SCROLL WHEEL UP - Next weapon
         if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f && bCanSwapWeapons)
         {
+            //Disable current weapon
             weaponsArray[currentWeaponIndex].gameObject.SetActive(false);
 
+            //Enable next weapon
             currentWeaponIndex = (currentWeaponIndex + 1) % 2;
-
             weaponsArray[currentWeaponIndex].gameObject.SetActive(true);
-        
-        
+            weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
+
+            //Start cooldown
             StartCoroutine(WeaponSwapCooldown());
         }
 
         //INPUT - AXIS RAW - SCROLL WHEEL DOWN - Previous weapon
         if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f && bCanSwapWeapons)
         {
+            //Disable current weapon
             weaponsArray[currentWeaponIndex].gameObject.SetActive(false);
 
+            //Enable previous weapon
             currentWeaponIndex = Mathf.Abs(currentWeaponIndex - 1) % 2;
-
             weaponsArray[currentWeaponIndex].gameObject.SetActive(true);
-        
-        
+            weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
+
+            //Start cooldown
             StartCoroutine(WeaponSwapCooldown());
         }
     }

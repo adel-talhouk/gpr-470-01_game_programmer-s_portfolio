@@ -52,6 +52,7 @@ public abstract class BaseWeapon : MonoBehaviour
     }
 
     //Derived methods
+    public abstract void UpdateCurrentWeaponUI();
     protected abstract IEnumerator Fire();
     protected abstract IEnumerator Reload();
 
