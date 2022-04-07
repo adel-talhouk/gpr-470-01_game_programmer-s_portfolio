@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    [Range(1.0f, 5.0f)] public float moveSpeed = 2.5f;
+    [Range(1.0f, 10.0f)] public float moveSpeed = 2.5f;
     [Range(1.0f, 3.0f)] public float sprintSpeedMultiplier = 1.5f;
     [Range(0.1f, 1.0f)] public float crouchSpeedMultiplier = 0.5f;
     [Range(0.25f, 0.75f)] public float crouchHeightMultiplier = 0.5f;
