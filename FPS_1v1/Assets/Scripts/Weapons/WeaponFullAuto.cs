@@ -177,7 +177,7 @@ public class WeaponFullAuto : BaseWeapon
         //If no ammo left
         if (totalRemainingAmmo == 0)
         {
-            warningsText.text = "OUT OF AMMO";
+            warningsText.text = "OUT OF AMMO. PRESS TAB TO SWAP WEAPONS";
 
             //TO-DO: Play SFX
 

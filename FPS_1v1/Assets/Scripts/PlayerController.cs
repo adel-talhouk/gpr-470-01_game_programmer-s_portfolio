@@ -71,8 +71,8 @@ public class PlayerController : MonoBehaviour
         xMove = Input.GetAxisRaw("Horizontal");
         zMove = Input.GetAxisRaw("Vertical");
 
-        //Toggle sprint
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        //Toggle sprint if moving forward 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && zMove > 0f)
         {
             //If crouching
             if (bIsCrouching)
@@ -96,6 +96,10 @@ public class PlayerController : MonoBehaviour
         {
             xMove *= sprintSpeedMultiplier;
             zMove *= sprintSpeedMultiplier;
+
+            //If sprinting but stops moving forward
+            if (zMove <= 0f)
+                bIsSprinting = false;
         }
 
         //Toggle crouch
