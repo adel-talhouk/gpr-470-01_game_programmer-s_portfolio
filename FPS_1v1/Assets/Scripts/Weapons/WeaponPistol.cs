@@ -34,7 +34,6 @@ public class WeaponPistol : BaseWeapon
 
         healthScript = transform.root.GetComponent<Health>();
 
-        //UpdateCurrentWeaponUI();
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
         weaponNameText.text = gameObject.name;
     }
@@ -202,10 +201,6 @@ public class WeaponPistol : BaseWeapon
         {
             ammoTopUp = base_magSize;
 
-            ////Update ammo count and reserve ammo count
-            //currentAmmoCount = ammoTopUp;
-            //reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
-
             //UI indicator
             warningsText.text = "RELOADING";
 
@@ -233,10 +228,6 @@ public class WeaponPistol : BaseWeapon
         {
             ammoTopUp = totalRemainingAmmo;
 
-            ////Update ammo count and reserve ammo count
-            //currentAmmoCount = ammoTopUp;
-            //reserveAmmoCount -= ammoTopUp - remainingAmmoInClip;
-
             //UI indicator
             warningsText.text = "RELOADING";
 
@@ -261,12 +252,6 @@ public class WeaponPistol : BaseWeapon
             bCanFire = true;
         }
     }
-
-    //public override void UpdateCurrentWeaponUI()
-    //{
-    //    ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
-    //    weaponNameText.text = gameObject.name;
-    //}
 
     public override void EnableWeapon()
     {

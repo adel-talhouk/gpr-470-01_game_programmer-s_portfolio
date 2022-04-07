@@ -34,14 +34,12 @@ public class WeaponManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab) && bCanSwapWeapons)
         {
             //Disable current weapon
-            //weaponsArray[currentWeaponIndex].StopAllCoroutines();
             weaponsArray[currentWeaponIndex].DisableWeapon();
             weaponsArray[currentWeaponIndex].gameObject.SetActive(false);
 
             //Enable next weapon
             currentWeaponIndex = (currentWeaponIndex + 1) % 2;
             weaponsArray[currentWeaponIndex].gameObject.SetActive(true);
-            //weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
             weaponsArray[currentWeaponIndex].EnableWeapon();
 
             //Start cooldown
@@ -52,14 +50,12 @@ public class WeaponManager : MonoBehaviour
         if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f && bCanSwapWeapons)
         {
             //Disable current weapon
-            //weaponsArray[currentWeaponIndex].StopAllCoroutines();
             weaponsArray[currentWeaponIndex].DisableWeapon();
             weaponsArray[currentWeaponIndex].gameObject.SetActive(false);
 
             //Enable next weapon
             currentWeaponIndex = (currentWeaponIndex + 1) % 2;
             weaponsArray[currentWeaponIndex].gameObject.SetActive(true);
-            //weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
             weaponsArray[currentWeaponIndex].EnableWeapon();
 
             //Start cooldown
@@ -70,14 +66,12 @@ public class WeaponManager : MonoBehaviour
         if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f && bCanSwapWeapons)
         {
             //Disable current weapon
-            //weaponsArray[currentWeaponIndex].StopAllCoroutines();
             weaponsArray[currentWeaponIndex].DisableWeapon();
             weaponsArray[currentWeaponIndex].gameObject.SetActive(false);
 
             //Enable previous weapon
             currentWeaponIndex = Mathf.Abs(currentWeaponIndex - 1) % 2;
             weaponsArray[currentWeaponIndex].gameObject.SetActive(true);
-            //weaponsArray[currentWeaponIndex].UpdateCurrentWeaponUI();
             weaponsArray[currentWeaponIndex].EnableWeapon();
 
             //Start cooldown
