@@ -6,14 +6,15 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
     //Public/Serialized data
-    [SerializeField] int maxHealth;
-    [SerializeField] float respawnTime;
+    [SerializeField] int maxHealth= 100;
+    [SerializeField] float respawnTime = 3f;
     public Slider healthSlider;
 
     //Helper data
     int currentHealth;
     bool bIsAlive = true;
     Vector3 respawnPoint;
+    Vector3 respawnFacingDirection;
 
     public bool BIsAlive { get { return bIsAlive; } }
 
@@ -24,7 +25,10 @@ public class Health : MonoBehaviour
         currentHealth = maxHealth;
         healthSlider.maxValue = maxHealth;
         healthSlider.value = currentHealth;
+
+        //Setup respawn data
         respawnPoint = transform.position;
+        respawnFacingDirection = transform.localEulerAngles;
     }
 
     public void TakeDamage(int damageValue)
@@ -55,6 +59,7 @@ public class Health : MonoBehaviour
     {
         //Turn off rotation lock and controls
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        GetComponent<Rigidbody>().AddForce(transform.right * 5f, ForceMode.Impulse);
         bIsAlive = false;
 
         yield return new WaitForSeconds(respawnTime);
@@ -62,8 +67,13 @@ public class Health : MonoBehaviour
         //Spawn at position
         transform.position = respawnPoint;
 
+        //Reset health
+        currentHealth = maxHealth;
+        healthSlider.value = currentHealth;
+
         //Restore rotation and controls
-        transform.rotation = Quaternion.identity; ;
+        //transform.rotation = Quaternion.identity;
+        transform.localEulerAngles = respawnFacingDirection;
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         bIsAlive = true;
     }

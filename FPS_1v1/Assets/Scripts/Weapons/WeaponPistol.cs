@@ -31,7 +31,7 @@ public class WeaponPistol : BaseWeapon
         currentAmmoCount = base_magSize;
         reserveAmmoCount = base_magSize * base_additionalMagCount;
 
-        healthScript = GetComponent<Health>();
+        healthScript = transform.root.GetComponent<Health>();
 
         ammoCountText.text = currentAmmoCount + "/" + reserveAmmoCount;
     }
@@ -135,8 +135,8 @@ public class WeaponPistol : BaseWeapon
 
         //TO-DO: Player SFX and particles
 
-        //If it hit something
-        if (rayHit.transform != null)
+        //If it hit a player
+        if (rayHit.transform != null && rayHit.transform.CompareTag("Player"))
         {
             float damageToApply = base_damageValue;
 
@@ -155,6 +155,9 @@ public class WeaponPistol : BaseWeapon
             //Indicate damage
             GameObject damageIndicator = Instantiate(base_damageIndicatorPrefab, rayHit.point, Quaternion.identity);
             damageIndicator.GetComponentInChildren<TextMeshProUGUI>().text = damageToApply.ToString();
+
+            //Deal damage - round it
+            rayHit.transform.GetComponent<Health>().TakeDamage((int)damageToApply);
         }
 
         //Cooldown

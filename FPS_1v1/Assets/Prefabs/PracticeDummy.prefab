@@ -708,7 +708,7 @@ GameObject:
   - component: {fileID: 1412519087736741703}
   m_Layer: 0
   m_Name: PracticeDummy
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -774,6 +774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  respawnTime: 3
   healthSlider: {fileID: 5572851967181991393}
 --- !u!1 &7064617020564408628
 GameObject:
