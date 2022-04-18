@@ -5,15 +5,19 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    [Range(1.0f, 10.0f)] public float moveSpeed = 2.5f;
-    [Range(1.0f, 3.0f)] public float sprintSpeedMultiplier = 1.5f;
-    [Range(0.1f, 1.0f)] public float crouchSpeedMultiplier = 0.5f;
-    [Range(0.25f, 0.75f)] public float crouchHeightMultiplier = 0.5f;
+    [SerializeField][Range(1.0f, 10.0f)] float moveSpeed = 2.5f;
+    [SerializeField][Range(1.0f, 3.0f)] float sprintSpeedMultiplier = 1.5f;
+    [SerializeField][Range(0.1f, 1.0f)] float crouchSpeedMultiplier = 0.5f;
+    [SerializeField][Range(0.25f, 0.75f)] float crouchHeightMultiplier = 0.5f;
 
     [Header("Jumping")]
-    [Range(250.0f, 1000.0f)] public float jumpForce = 500f;
-    [Range(0.01f, 0.5f)] public float groundDetectionDistance = 0.1f;
-    public LayerMask groundLayer;
+    [SerializeField][Range(250.0f, 1000.0f)] float jumpForce = 500f;
+    [SerializeField] [Range(0.01f, 0.5f)] float groundDetectionDistance = 0.1f;
+    [SerializeField] LayerMask groundLayer;
+
+    [Header("Misc.")]
+    public GameObject pauseMenu;
+    public GameObject parentUI;
 
     //Components
     Rigidbody rb;
@@ -27,6 +31,7 @@ public class PlayerController : MonoBehaviour
     bool bIsGrounded = false;
     bool bIsSprinting = false;
     bool bIsCrouching = false;
+    bool bCanMove = true;
 
     //Helper data - components
     float originalCapsuleColHeight;
@@ -43,6 +48,10 @@ public class PlayerController : MonoBehaviour
 
         originalCapsuleColHeight = capsuleCol.height;
         originalGroundCheckLocalPos = groundCheckTransform.localPosition;
+
+        //Pause menu and UI
+        pauseMenu.SetActive(false);
+        parentUI.SetActive(true);
     }
 
     // Update is called once per frame
@@ -50,13 +59,40 @@ public class PlayerController : MonoBehaviour
     {
         if (healthScript.BIsAlive)
         {
-            //Get input
-            GetInput();
+            //Look for pause
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                //Toggle bCanMove
+                bCanMove = !bCanMove;
+                GetComponentInChildren<CameraController>().bCanMove = bCanMove;
 
-            //Move - If-statement to increase efficiency - don't make a new Vector3 if you don't have to
-            if (xMove != 0 || zMove != 0)
-                rb.velocity = new Vector3(0f, rb.velocity.y, 0f) + transform.TransformDirection(new Vector3(xMove, 0f, zMove)) * moveSpeed * Time.deltaTime * 100f;
+                //Toggle menu and UI
+                pauseMenu.SetActive(!pauseMenu.activeInHierarchy);
+                parentUI.SetActive(!parentUI.activeInHierarchy);
 
+                //Toggle cursor
+                if (bCanMove)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
+            }
+
+            if (bCanMove)
+            {
+                //Get input
+                GetInput();
+
+                //Move - If-statement to increase efficiency - don't make a new Vector3 if you don't have to
+                if (xMove != 0 || zMove != 0)
+                    rb.velocity = new Vector3(0f, rb.velocity.y, 0f) + transform.TransformDirection(new Vector3(xMove, 0f, zMove)) * moveSpeed * Time.deltaTime * 100f;
+
+            }
         }
     }
 
