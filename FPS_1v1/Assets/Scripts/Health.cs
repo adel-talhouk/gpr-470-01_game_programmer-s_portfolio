@@ -72,7 +72,6 @@ public class Health : MonoBehaviour
         healthSlider.value = currentHealth;
 
         //Restore rotation and controls
-        //transform.rotation = Quaternion.identity;
         transform.localEulerAngles = respawnFacingDirection;
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         bIsAlive = true;
