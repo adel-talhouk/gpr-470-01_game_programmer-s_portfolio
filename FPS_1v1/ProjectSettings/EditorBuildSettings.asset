@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: c46c0b517caed6e45843125386081319
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: f5c2da0ee545b2b479765816e133d8a8
+  - enabled: 1
+    path: Assets/Scenes/VersusAI.unity
+    guid: ef59957b775b37246bad820d649f2cc8
   m_configObjects: {}
