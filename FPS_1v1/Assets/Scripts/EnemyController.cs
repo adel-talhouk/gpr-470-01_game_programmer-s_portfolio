@@ -13,16 +13,19 @@ public class EnemyController : MonoBehaviour
     [Header("Combat")]
     [SerializeField] [Range(0.1f, 0.5f)] float reactionTime = 0.4f;
     [SerializeField] [Range(4f, 10f)] float coverDetectionDistance = 5f;
-    [SerializeField] [Range(0f, 45f)] float coverDetectionMaxAngleFromNormal = 45f;
+    [SerializeField] Vector3 coverDetectionSweepingAngles;
+    [SerializeField] LayerMask coverLayer;
 
     //Components
     Rigidbody rb;
 
     //Coroutines
-    Coroutine hideBehindCover;
+    Coroutine hideBehindCoverRoutine;
 
     //Helper data
     Vector3 targetMovePosition;
+    Vector3 coverDetectionSweepingVector;
+    RaycastHit coverDetectionRayHit;
     bool bIsCrouching = false;
     bool bIsHidden = false;
 
@@ -43,13 +46,13 @@ public class EnemyController : MonoBehaviour
     void LookForCover()
     {
         //Sweep direction down and up
-
+        coverDetectionSweepingVector = Quaternion.Euler(coverDetectionSweepingAngles * Time.deltaTime) * coverDetectionSweepingVector;
+        Debug.DrawRay(transform.position, coverDetectionSweepingVector * coverDetectionDistance, Color.red, 0.1f);
 
         //Ray forward if hasn't found cover yet
-        if (hideBehindCover == null && )
+        if (hideBehindCoverRoutine == null && Physics.Raycast(transform.position, coverDetectionSweepingVector, out coverDetectionRayHit, coverDetectionDistance, coverLayer))
         {
-            hideBehindCover = HideBehindCover();
-            StartCoroutine(hideBehindCover);
+            hideBehindCoverRoutine = StartCoroutine(HideBehindCover(coverDetectionRayHit.transform.Find("HidePoint").position));
         }
     }
 
@@ -71,6 +74,7 @@ public class EnemyController : MonoBehaviour
                     ToggleCrouch();
 
                 bIsHidden = true;
+                hideBehindCoverRoutine = null;
             }
         }
     }
