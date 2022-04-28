@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
 
     //Helper data
     Vector3 targetMovePosition;
-    Vector3 coverDetectionSweepingVector = Vector3.forward;
+    Transform coverDetectionSweepingTransform;
     RaycastHit coverDetectionRayHit;
     bool bIsCrouching = false;
     bool bIsHidden = false;
@@ -55,6 +55,7 @@ public class EnemyController : MonoBehaviour
         originalGroundCheckLocalPos = groundCheckTransform.localPosition;
 
         targetMovePosition = transform.position;
+        coverDetectionSweepingTransform = transform.Find("CoverDetection");
         currentState = EnemyState.STATE_DEFAULT;
     }
 
@@ -67,14 +68,15 @@ public class EnemyController : MonoBehaviour
 
     void LookForCover()
     {
-        if (!bFoundCover)
+        //If is not hidden and didn't find cover yet
+        if (!bIsHidden && !bFoundCover)
         {
-            //Sweep direction down and up
-            coverDetectionSweepingVector = Quaternion.Euler(coverDetectionSweepingAngles * Time.deltaTime) * coverDetectionSweepingVector;
-            Debug.DrawRay(transform.position, coverDetectionSweepingVector * coverDetectionDistance, Color.red, 0.1f);
+            //Sweep direction down and up from the forward direction
+            coverDetectionSweepingTransform.rotation = Quaternion.Euler(coverDetectionSweepingAngles.x * Mathf.Abs(Mathf.Sin(Time.time)), coverDetectionSweepingAngles.y, coverDetectionSweepingAngles.z);
+            Debug.DrawRay(transform.position, coverDetectionSweepingTransform.forward * coverDetectionDistance, Color.red, 0.1f);
 
             //Ray forward if hasn't found cover yet
-            bFoundCover = Physics.Raycast(transform.position, coverDetectionSweepingVector, out coverDetectionRayHit, coverDetectionDistance, coverLayer);
+            bFoundCover = Physics.Raycast(transform.position, coverDetectionSweepingTransform.forward, out coverDetectionRayHit, coverDetectionDistance, coverLayer);
             if (hideBehindCoverRoutine == null && bFoundCover)
             {
                 hideBehindCoverRoutine = StartCoroutine(HideBehindCover(coverDetectionRayHit.transform.Find("HidePoint").position));
@@ -99,7 +101,7 @@ public class EnemyController : MonoBehaviour
     void MoveTowardsTargetPosition()
     {
         //Move
-        rb.velocity = new Vector3(0f, rb.velocity.y, 0f) + (targetMovePosition - transform.position).normalized * moveSpeed * Time.deltaTime * 100f;
+        rb.velocity = new Vector3(0f, rb.velocity.y, (targetMovePosition - transform.position).normalized.z) * moveSpeed * Time.deltaTime * 100f;
 
         //If close enough
         if (Vector3.Distance(transform.position, targetMovePosition) <= 0.25f)
