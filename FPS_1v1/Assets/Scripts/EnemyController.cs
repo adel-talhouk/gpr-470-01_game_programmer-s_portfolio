@@ -121,6 +121,9 @@ public class EnemyController : MonoBehaviour
                         if (!bIsCrouching)
                             ToggleCrouch();
 
+                        //Stop moving
+                        rb.velocity = Vector3.zero;
+
                         bIsHidden = true;
                         hideBehindCoverRoutine = null;
                         bFoundCover = false;
