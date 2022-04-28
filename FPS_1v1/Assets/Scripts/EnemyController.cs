@@ -101,7 +101,11 @@ public class EnemyController : MonoBehaviour
     void MoveTowardsTargetPosition()
     {
         //Move
-        rb.velocity = new Vector3(0f, rb.velocity.y, (targetMovePosition - transform.position).normalized.z) * moveSpeed * Time.deltaTime * 100f;
+        //rb.velocity = new Vector3(0f, rb.velocity.y, (targetMovePosition - transform.position).normalized.z) * moveSpeed * Time.deltaTime * 100f;
+        rb.velocity = new Vector3(0f, rb.velocity.y, 0f) + transform.TransformDirection(new Vector3((targetMovePosition - transform.position).normalized.x, 0f, (targetMovePosition - transform.position).normalized.z)) * moveSpeed * Time.deltaTime * 100f;
+        
+        //Look at target, but not on Y axis
+        transform.LookAt(new Vector3(targetMovePosition.x, transform.position.y, targetMovePosition.z));
 
         //If close enough
         if (Vector3.Distance(transform.position, targetMovePosition) <= 0.25f)
